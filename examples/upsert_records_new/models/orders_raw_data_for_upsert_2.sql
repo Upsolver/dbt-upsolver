@@ -3,11 +3,8 @@
             source = 'S3',
         	  options={
           	'CONTENT_TYPE': 'JSON'
+            'LOCATION': "s3://upsolver-samples/orders/",
         	   },
-            source_options={
-              'BUCKET': "upsolver-samples",
-              'PREFIX': "orders/"
-            },
         	partition_by=[{'field':'$event_date'}]
       	)
 }}
