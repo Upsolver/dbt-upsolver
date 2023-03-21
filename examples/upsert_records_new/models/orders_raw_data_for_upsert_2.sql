@@ -5,8 +5,8 @@
           	'CONTENT_TYPE': 'JSON'
         	   },
             source_options={
-              'BUCKET': "'upsolver-samples'",
-              'PREFIX': "'orders/'"
+              'BUCKET': "upsolver-samples",
+              'PREFIX': "orders/"
             },
         	partition_by=[{'field':'$event_date'}]
       	)
