@@ -1,1 +1,2 @@
 upsolver-sdk-python
+dbt-core

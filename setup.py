@@ -67,8 +67,8 @@ setup(
     },
     include_package_data=True,
     install_requires = [
-        "dbt-core~={}".format(dbt_version),
-        "upsolver-sdk-python~=0.1.6"
+        "dbt-core~=1.4.6",
+        "upsolver-sdk-python"
     ],
     zip_safe=False,
     classifiers=[
