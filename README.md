@@ -104,6 +104,8 @@ dbt run --select <model name>
 - dbt run
 - dbt compile
 
+### !not supported Upsolver feature [Delete data from target table](https://docs.upsolver.com/sqlake/quickstarts/delete-data-from-your-target-table)
+
 
 ## Further reading
 [Projects samples examples](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
