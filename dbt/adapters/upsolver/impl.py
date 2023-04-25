@@ -104,6 +104,16 @@ class UpsolverAdapter(adapter_cls):
             options = Copy_options[source.lower()][options_type]
         return options
 
+    @available
+    def get_delete_placeholder(self, sql, delete_condition):
+        if delete_condition:
+            delete_placeholder= re.search('(nettotal < 0 [as|AS,\s]*\w*)', sql)[1] \
+              .lower().replace(" ", "") \
+              .replace(f"{delete_condition.lower().replace(' ', '')}as", "")
+            return delete_placeholder
+        else:
+            return False
+
     def list_relations_without_caching(
         self,
         schema_relation: UpsolverRelation,
