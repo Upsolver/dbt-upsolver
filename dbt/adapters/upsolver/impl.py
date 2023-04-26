@@ -32,7 +32,7 @@ class UpsolverAdapter(adapter_cls):
         return "datenow()"
 
     def debug_query(self) -> None:
-        self.execute('SELECT * FROM logs.logs.task_executions limit 1;')
+        self.execute('SELECT * FROM system.information_schema.jobs limit1;')
 
     def create_schema(self, relation: UpsolverRelation) -> None:
         pass
