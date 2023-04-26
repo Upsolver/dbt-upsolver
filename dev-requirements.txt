@@ -1,4 +1,3 @@
-dbt-tests-adapter
 mypy==0.981
 pre-commit
 pytest

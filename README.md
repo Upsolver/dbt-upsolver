@@ -4,7 +4,7 @@
 
 ## What is Upsolver
 
-[Upsolver](https://upsolver.com) enables you to use familiar SQL syntax to quickly build and deploy data pipelines, powered by a stream processing engine designed for cloud data lakes.
+[Upsolver](https://upsolver.com) enables you to use familiar SQL syntaxto quickly build and deploy data pipelines, powered by a stream processing engine designed for cloud data lakes.
 
 ## SQLake
 
@@ -42,8 +42,11 @@ To register just navigate to [SQL Lake Sign Up form](https://sqlake.upsolver.com
 ### Create API token
 
 After login navigate to "[Settings](https://sqlake.upsolver.com/Settings)" and then to "[API Tokens](https://sqlake.upsolver.com/Settings/api-tokens)"
+
 You will need API token and API Url to access Upsolver programatically.
-Settings -> API Tokens -> Generate
+
+![API Tokens screen](https://github.com/Upsolver/upsolver-sdk-python/raw/build_package/doc/img/APITokens-m.png)
+
 Then click "Generate" new token and save it for future use.
 
 ### Get your user name, database and schema
@@ -90,22 +93,123 @@ project_name:
 ```sh
 dbt debug
 ```
-#### Run all models
+#### - To run all models
 ```sh
 dbt run
 ```
-#### Run the specific model
+#### - To run the specific model
 ```sh
 dbt run --select <model name>
 ```
 ### Supported dbt commands:
-- dbt init
-- dbt debug
-- dbt run
-- dbt compile
 
-### !not supported Upsolver feature [Delete data from target table](https://docs.upsolver.com/sqlake/quickstarts/delete-data-from-your-target-table)
+| COMMAND | STATE |
+| ------ | ------ |
+| docs| not supported |
+| source | not supported |
+| init | supported |
+| clean | supported |
+| debug | supported |
+| deps | supported |
+| list| not supported |
+| ls | not supported |
+| build | supported |
+| snapshot | not supported |
+| run | supported |
+| compile | supported |
+| parse | supported |
+| test | not supported |
+| seed | not supported |
+| run-operation | supported |
 
+### Supported Upsolver SQLake functionality:
+| COMMAND | STATE | MATERIALIZED |
+| ------ | ------ | ------ |
+| SQL compute cluster| not supported | - |
+| SQL connections| supported | connection |
+| SQL copy job | supported | incremental |
+| SQL merge job | supported | incremental |
+| SQL insert job | supported | incremental |
+| SQL materialized views | supported | materializedview |
+
+## SQL connections
+Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQLake connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
+As a dbt model connection is a model with materialized='connection'
+```sql
+{{ config(
+        materialized='connection',
+        connection_type={ 'S3' | 'GLUE_CATALOG' | 'KINESIS' | 'KAFKA'| 'SNOWFLAKE' },
+        connection_options={}
+    	)
+}}
+```
+Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists) SQL and send it to Upsolver engine. Name of the connection will be name of the model.
+
+## SQL copy job
+A COPY FROM job allows you to copy your data from a given source into a table created in a metastore connection. This table then serves as your staging table and can be used with SQLake transformation jobs to write to various target locations. More details on ["Upsolver SQLake copy-from"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from)
+As a dbt model connection is model with materialized='incremental'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            source = 'S3'| 'KAFKA' | ... ,
+        	options={
+              	'option_name': 'option_value'
+            },
+        	partition_by=[{}]
+      	)
+}}
+SELECT * FROM {{ ref(<model>) }}
+```
+Running this model will  compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE COPY JOB(or ALTER COPY JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL insert job
+An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQLake insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
+As a dbt model connection is model with materialized='incremental' and incremental_strategy='insert'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            map_columns_by_name=True|False,
+            incremental_strategy='insert',
+            options={
+              	'option_name': 'option_value'
+            },
+            primary_key=[{}]
+          )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+HAVING COUNT(DISTINCT orderid::string) ...
+```
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE INSERT JOB(or ALTER INSERT JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL merge job
+A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQLake merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
+As a dbt model connection is model with materialized='incremental' and incremental_strategy='merge'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            map_columns_by_name=True|False,
+            incremental_strategy='merge',
+            options={
+              	'option_name': 'option_value'
+            },
+            primary_key=[{}]
+          )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+HAVING COUNT ...
+```
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL materialized views
+
+## Projects examples
+> projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
 
 ## Further reading
 [Projects samples examples](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
