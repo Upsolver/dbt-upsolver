@@ -1,6 +1,18 @@
 # dbt-upsolver
 # Using Upsolver udapter for dbt
 
+- [What is Upsolver](#what_is_upsolver)
+- [SQLake](#SQLake)
+- [What is dbt](#what_is_dbt)
+- [What is dbt Core](#what_is_dbt_core)
+- [Getting started](#getting_started)
+    - [Install dbt-upsolver adapter](#install_dbt_upsolver)
+    - [Register Upsolver account](#register_upsolver)
+    - [Create API token](#create_api_token)
+    - [Create new dbt-upsolver project](#create_new_project)
+- [Supported dbt commands](#supported_dbt)
+- [Supported Upsolver SQLake functionality](#supported_upsolver)
+- [Further reading](#further_reading)
 
 ## What is Upsolver
 
@@ -133,7 +145,7 @@ dbt run --select <model name>
 | SQL materialized views | supported | materializedview |
 
 ## SQL connections
-Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQLake connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
+Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQL connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
 As a dbt model connection is a model with materialized='connection'
 ```sql
 {{ config(
@@ -146,8 +158,9 @@ As a dbt model connection is a model with materialized='connection'
 Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists) SQL and send it to Upsolver engine. Name of the connection will be name of the model.
 
 ## SQL copy job
-A COPY FROM job allows you to copy your data from a given source into a table created in a metastore connection. This table then serves as your staging table and can be used with SQLake transformation jobs to write to various target locations. More details on ["Upsolver SQLake copy-from"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from)
-As a dbt model connection is model with materialized='incremental'
+A COPY FROM job allows you to copy your data from a given source into a table created in a metastore connection. This table then serves as your staging table and can be used with SQLake transformation jobs to write to various target locations. More details on ["Upsolver SQL copy-from"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from)
+
+As a dbt model copy job is model with materialized='incremental'
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -163,8 +176,9 @@ SELECT * FROM {{ ref(<model>) }}
 Running this model will  compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE COPY JOB(or ALTER COPY JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL insert job
-An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQLake insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
-As a dbt model connection is model with materialized='incremental' and incremental_strategy='insert'
+An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
+
+As a dbt model insert job is model with materialized='incremental' and incremental_strategy='insert'
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -185,8 +199,9 @@ HAVING COUNT(DISTINCT orderid::string) ...
 Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE INSERT JOB(or ALTER INSERT JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL merge job
-A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQLake merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
-As a dbt model connection is model with materialized='incremental' and incremental_strategy='merge'
+A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
+
+As a dbt model merge job is model with materialized='incremental' and incremental_strategy='merge'
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -207,6 +222,22 @@ HAVING COUNT ...
 Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL materialized views
+When transforming your data, you may find that you need data from multiple source tables in order to achieve your desired result.
+In such a case, you can create a materialized view from one SQLake table in order to join it with your other table (which in this case is considered the main table). More details on ["Upsolver SQL materialized views"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/sql-materialized-views).
+
+As a dbt model materialized views  is model with materialized='materializedview'.
+```sql
+{{ config(  materialized='materializedview',
+            sync=True|False,
+            options={'option_name': 'option_value'}
+        )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+```
+Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
 ## Projects examples
 > projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
