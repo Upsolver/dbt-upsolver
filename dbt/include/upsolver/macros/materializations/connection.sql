@@ -7,9 +7,6 @@
   {% set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') %}
 
 
-
-  {%- set curr_datetime = adapter.alter_datetime() -%}
-
   {%- set old_relation = adapter.get_relation(identifier=identifier,
                                               schema=schema,
                                               database=database) -%}

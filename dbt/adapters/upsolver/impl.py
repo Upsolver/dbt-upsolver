@@ -8,6 +8,7 @@ from dbt.adapters.upsolver.options.copy_options import Copy_options
 from dbt.adapters.upsolver.options.connection_options import Connection_options
 from dbt.adapters.upsolver.options.transformation_options import Transformation_options
 from dbt.adapters.upsolver.options.table_options import Table_options
+from dbt.adapters.upsolver.options.materialized_view_options import Materialized_view_options
 import agate
 import datetime
 import re
@@ -39,11 +40,6 @@ class UpsolverAdapter(adapter_cls):
 
     def drop_schema(self, relation: UpsolverRelation) -> None:
         pass
-
-    @available
-    def alter_datetime(self):
-        datetime_now = datetime.datetime.now()
-        return 'Altered: ' + datetime_now.strftime('%Y-%m-%d %H:%M:%S')
 
     @available
     def get_connection_from_sql(self, sql):
@@ -100,6 +96,8 @@ class UpsolverAdapter(adapter_cls):
             options = Transformation_options[source.lower()]
         elif options_type == 'table_options':
             options = Table_options
+        elif options_type == 'materialized_view_options':
+            options = Materialized_view_options
         else:
             options = Copy_options[source.lower()][options_type]
         return options
