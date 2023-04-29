@@ -1,75 +1,98 @@
 # dbt-upsolver
+# Using Upsolver udapter for dbt
 
-## Work in progress ...
+- [What is Upsolver](#what_is_upsolver)
+- [SQLake](#SQLake)
+- [What is dbt](#what_is_dbt)
+- [What is dbt Core](#what_is_dbt_core)
+- [Getting started](#getting_started)
+    - [Install dbt-upsolver adapter](#install_dbt_upsolver)
+    - [Register Upsolver account](#register_upsolver)
+    - [Create API token](#create_api_token)
+    - [Create new dbt-upsolver project](#create_new_project)
+- [Supported dbt commands](#supported_dbt)
+- [Supported Upsolver SQLake functionality](#supported_upsolver)
+- [Further reading](#further_reading)
 
-#### Instruction for dev run:
+## What is Upsolver
 
-> Note: The latest version of dbt-core is compatible with `Python versions 3.7, 3.8, 3.9, and 3.10`
+[Upsolver](https://upsolver.com) enables you to use familiar SQL syntaxto quickly build and deploy data pipelines, powered by a stream processing engine designed for cloud data lakes.
 
-### 1. Install dbt-core:
+## SQLake
+
+[SQLake](https://docs.upsolver.com/sqlake) is Upsolvers new UI and SQL console allowing to execute commands and monitor pipelines in the UI. It also includes freee trial and access to variety of examples and tutorials.
+
+## What is dbt
+[dbt](https://docs.getdbt.com/) is a transformation workflow that helps you get more work done while producing higher quality results.
+
+## What is dbt Core
+dbt Core is an open-source tool that enables data teams to transform data using analytics engineering best practices. You can install and use dbt Core on the command line.
+
+## Getting started  
+
+### Install dbt-upsolver adapter :
+
 ```sh
-pip install dbt-core
+ pip install  dbt-upsolver
 ```
-##### make sure that insatled latest dbt version  1.4.1:
-```sh
-dbt --version
-```
-##### if not upgrade it:
-```sh
-pip install --upgrade dbt-core
-```
-or use [installation guide](https://docs.getdbt.com/docs/get-started/installation)
-
-### 2. Get local driver version and install it:
-```sh
-git clone git@github.com:Upsolver/upsolver-sdk-python.git upsolver-sdk-python
-cd upsolver-sdk-python
-pip install -e $(pwd)
-```
-### 3. Get local adapter version:
-#### back to work directory
-```sh
-cd ..
-```
-#### clone dbt-upsolver
-```sh
-git clone git@github.com:Upsolver/dbt-upsolver.git dbt-upsolver
-```
-### 4. Build whl file and install it:
-```sh
-cd dbt-upsolver
-
-python setup.py bdist_wheel --universal
-
-find ./dist/*.whl -maxdepth 1 -type f | xargs pip install --force-reinstall --find-links=dist/
-```
-
-### 5. Make sure the adapter is installed:
+### Make sure the adapter is installed:
 ```sh
 dbt --version
 ```
 #### Expect to see:
 ```
 Core:
-  - installed: 1.4.1
-  - latest:    1.4.1 - Up to date!
+  - installed: <version>
+  - latest:    <version>
 Plugins:
-  - upsolver: 1.4.1 - Could not determine latest version
+  - upsolver: <version>
 ```
-###  5.  Add to profiles.yml the following code:
-###### profiles.yml location is something like /Users/tanya shemet/.dbt/profiles.yml
-```yml
-config:
-  use_colors: true
-  partial_parse: true
-  warn_error: true
-  debug: true
+### Register Upsolver account
 
-mt-api-integ-e2e:
+To register just navigate to [SQL Lake Sign Up form](https://sqlake.upsolver.com/signup). You'll have access to SQL workbench with examples and tutorials after completing the registration.
+
+### Create API token
+
+After login navigate to "[Settings](https://sqlake.upsolver.com/Settings)" and then to "[API Tokens](https://sqlake.upsolver.com/Settings/api-tokens)"
+
+You will need API token and API Url to access Upsolver programatically.
+
+![API Tokens screen](https://github.com/Upsolver/upsolver-sdk-python/raw/build_package/doc/img/APITokens-m.png)
+
+Then click "Generate" new token and save it for future use.
+
+### Get your user name, database and schema
+For **user name** navigate to **Settings** -> **User details** and copy user name
+For **database** and **schema** navigate to **Worksheets** and click **New**.
+You will find **database name** and **schema(catalog) name** under **Entities panel**
+
+###  Create new dbt-upsolver project
+```sh
+dbt init <project_name>
+```
+Prompt:
+
+Which database would you like to use?
+[1] upsolver
+
+```sh
+Enter a number:
+api_url (your api_url): https://mt-api-prod.upsolver.com
+token (your token): <token>
+user (dev username): <username>
+database (default database): <database>
+schema (default schema): <schema>
+threads (1 or more) [1]: <number>
+```
+
+####  profiles.yml should look like this:
+###### profiles.yml location is something like /Users/<user>/.dbt/profiles.yml
+```yml
+project_name:
   target: dev
   outputs:
     dev:
-      api_url: https://mt-api-integ-e2e.upsolver.com
+      api_url: https://mt-api-prod.upsolver.com
       database: ...
       schema: ...
       threads: 1
@@ -77,17 +100,8 @@ mt-api-integ-e2e:
       type: upsolver
       user: ...
 ```
-> database and schema  you can find on your https://mt-api-integ-e2e.upsolver.com
-> token you should  generate on your https://mt-api-integ-e2e.upsolver.com
 
-###  6. Run dbt in one of the folders of projects examples
-For example: /dbt-upsolver/examples/s3_to_athena
-#### Go to project folder
-Under dbt-upsolver/
-```sh
-cd examples/s3_to_athena
-```
-#### - To check connection:
+### Check connection
 ```sh
 dbt debug
 ```
@@ -99,6 +113,136 @@ dbt run
 ```sh
 dbt run --select <model name>
 ```
+### Supported dbt commands:
 
-> Since requests for the upsolver system information are still under development.
-The model will work successfully if it hasn't been created before. If it did then the model will be altered with "COMMENT = {curr_datetime}"
+| COMMAND | STATE |
+| ------ | ------ |
+| docs| not supported |
+| source | not supported |
+| init | supported |
+| clean | supported |
+| debug | supported |
+| deps | supported |
+| list| not supported |
+| ls | not supported |
+| build | supported |
+| snapshot | not supported |
+| run | supported |
+| compile | supported |
+| parse | supported |
+| test | not supported |
+| seed | not supported |
+| run-operation | supported |
+
+### Supported Upsolver SQLake functionality:
+| COMMAND | STATE | MATERIALIZED |
+| ------ | ------ | ------ |
+| SQL compute cluster| not supported | - |
+| SQL connections| supported | connection |
+| SQL copy job | supported | incremental |
+| SQL merge job | supported | incremental |
+| SQL insert job | supported | incremental |
+| SQL materialized views | supported | materializedview |
+
+## SQL connections
+Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQL connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
+As a dbt model connection is a model with materialized='connection'
+```sql
+{{ config(
+        materialized='connection',
+        connection_type={ 'S3' | 'GLUE_CATALOG' | 'KINESIS' | 'KAFKA'| 'SNOWFLAKE' },
+        connection_options={}
+    	)
+}}
+```
+Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists) SQL and send it to Upsolver engine. Name of the connection will be name of the model.
+
+## SQL copy job
+A COPY FROM job allows you to copy your data from a given source into a table created in a metastore connection. This table then serves as your staging table and can be used with SQLake transformation jobs to write to various target locations. More details on ["Upsolver SQL copy-from"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from)
+
+As a dbt model copy job is model with materialized='incremental'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            source = 'S3'| 'KAFKA' | ... ,
+        	options={
+              	'option_name': 'option_value'
+            },
+        	partition_by=[{}]
+      	)
+}}
+SELECT * FROM {{ ref(<model>) }}
+```
+Running this model will  compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE COPY JOB(or ALTER COPY JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL insert job
+An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
+
+As a dbt model insert job is model with materialized='incremental' and incremental_strategy='insert'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            map_columns_by_name=True|False,
+            incremental_strategy='insert',
+            options={
+              	'option_name': 'option_value'
+            },
+            primary_key=[{}]
+          )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+HAVING COUNT(DISTINCT orderid::string) ...
+```
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE INSERT JOB(or ALTER INSERT JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL merge job
+A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
+
+As a dbt model merge job is model with materialized='incremental' and incremental_strategy='merge'
+```sql
+{{ config(  materialized='incremental',
+            sync=True|False,
+            map_columns_by_name=True|False,
+            incremental_strategy='merge',
+            options={
+              	'option_name': 'option_value'
+            },
+            primary_key=[{}]
+          )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+HAVING COUNT ...
+```
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
+
+## SQL materialized views
+When transforming your data, you may find that you need data from multiple source tables in order to achieve your desired result.
+In such a case, you can create a materialized view from one SQLake table in order to join it with your other table (which in this case is considered the main table). More details on ["Upsolver SQL materialized views"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/sql-materialized-views).
+
+As a dbt model materialized views  is model with materialized='materializedview'.
+```sql
+{{ config(  materialized='materializedview',
+            sync=True|False,
+            options={'option_name': 'option_value'}
+        )
+}}
+SELECT ...
+FROM {{ ref(<model>) }}
+WHERE ...
+GROUP BY ...
+```
+Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
+
+## Projects examples
+> projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
+
+## Further reading
+[Projects samples examples](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
+[Upsolver sqlake documentation](https://docs.upsolver.com/sqlake/)
+[Upsolver sqlake documentation](https://docs.getdbt.com/docs/introduction)
