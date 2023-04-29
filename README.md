@@ -240,9 +240,13 @@ GROUP BY ...
 Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
 ## Projects examples
+
 > projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
 
 ## Further reading
-[Projects samples examples](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
+
+[Projects examples](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
+
 [Upsolver sqlake documentation](https://docs.upsolver.com/sqlake/)
-[Upsolver sqlake documentation](https://docs.getdbt.com/docs/introduction)
+
+[DBT documentation](https://docs.getdbt.com/docs/introduction)
