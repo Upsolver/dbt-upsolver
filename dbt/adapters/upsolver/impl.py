@@ -35,6 +35,7 @@ class UpsolverAdapter(adapter_cls):
     def debug_query(self) -> None:
         self.execute('SELECT * FROM system.information_schema.jobs limit1;')
 
+
     def create_schema(self, relation: UpsolverRelation) -> None:
         pass
 
