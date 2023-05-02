@@ -21,7 +21,7 @@ Connection_options = {
         "topic_display_filter": {"type": "text", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
     },
-    "glue_katalog": {
+    "glue_catalog": {
         "aws_role": {"type": "text", "editable": True, "optional": True},
         "external_id": {"type": "text", "editable": True, "optional": True},
         "aws_access_key_id": {"type": "text", "editable": True, "optional": True},
