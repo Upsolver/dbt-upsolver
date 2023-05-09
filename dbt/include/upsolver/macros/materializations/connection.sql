@@ -18,11 +18,6 @@
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
 
-  {{ log("Options: " ~ connection_options ) }}
-  {{ log("Enriched options: " ~ enriched_options ) }}
-  {{ log("Enriched options: " ~ enriched_options ) }}
-
-
   {% if old_relation %}
     {% call statement('main') %}
       ALTER {{ connection_type }} CONNECTION {{target_relation.identifier}}

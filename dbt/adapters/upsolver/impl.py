@@ -12,6 +12,7 @@ from dbt.adapters.upsolver.options.materialized_view_options import Materialized
 import agate
 import datetime
 import re
+import dbt
 
 logger = AdapterLogger("Upsolver")
 LIST_RELATION_MACRO_NAME = "list_relation_without_caching"
@@ -44,10 +45,12 @@ class UpsolverAdapter(adapter_cls):
 
     @available
     def get_connection_from_sql(self, sql):
-        connection_identifier = re.search('"(.*)"', sql).group().split('.')[2] \
-                                  .translate(str.maketrans({'\"':'', '\'':''}))
-
-        return connection_identifier
+        try:
+            connection_identifier = re.search('"(.*)"', sql).group().split('.')[2] \
+                                      .translate(str.maketrans({'\"':'', '\'':''}))
+            return connection_identifier
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql:\n{sql}")
 
     @available
     def get_columns_names_with_types(self, list_dict):
@@ -102,16 +105,6 @@ class UpsolverAdapter(adapter_cls):
         else:
             options = Copy_options[source.lower()][options_type]
         return options
-
-    @available
-    def get_delete_placeholder(self, sql, delete_condition):
-        if delete_condition:
-            delete_placeholder= re.search('(nettotal < 0 [as|AS,\s]*\w*)', sql)[1] \
-              .lower().replace(" ", "") \
-              .replace(f"{delete_condition.lower().replace(' ', '')}as", "")
-            return delete_placeholder
-        else:
-            return False
 
     def list_relations_without_caching(
         self,
