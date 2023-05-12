@@ -28,18 +28,21 @@
 */
 {% endmacro %}
 
+
 {% macro upsolver__get_columns_in_relation(relation) -%}
-'''Returns a list of Columns in a table.'''
-/*
-  1. select as many values from column as needed
-  2. search relations to columns
-  3. where table name is equal to the relation identifier
-  4. if a relation schema exists and table schema is equal to the relation schema
-  5. order in whatever way you want to call.
-  6. create a table by loading result from call
-  7. return new table
-*/
+  {% if relation.type == 'table'  %}
+  {% call statement('get_columns_relation', fetch_result=True, auto_begin=False) -%}
+      SELECT * FROM system.information_schema.columns
+      where "catalog" = {{relation.database}}
+      and "schema" = {{relation.schema}}
+      and AND "table" = {{relation.identifier}}
+
+  {% endcall %}
+  {% endif %}
+
+  {{ return(load_result('get_columns_relation').table) }}
 {% endmacro %}
+
 
 {% macro list_relation_without_caching(schema_relation, relation_type) -%}
   {% set source = relation_type +'s' %}
