@@ -34,6 +34,7 @@ Copy_options = {
         "column_exclude_list": {"type": "list", "editable": False, "optional": True}
     },
     "job_options": {
+        "heartbeat_table": {"type": "text", "editable": False, "optional": True},
         "skip_snapshots": {"type": "boolean", "editable": False, "optional": True},
         "publication_name": {"type": "text", "editable": False, "optional": False},
         "end_at": {"type": "value", "editable": True, "optional": True},
