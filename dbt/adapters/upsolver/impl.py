@@ -82,7 +82,7 @@ class UpsolverAdapter(adapter_cls):
             if find_value:
                 if options[option.lower()]['type'] == 'list':
                     if not isinstance(value, str):
-                        value = f"('{' '.join(str(x) for x in value)}')"
+                        value = tuple(i for i in value)
                     else:
                         value = f"('{value}')"
                 enriched_options[option] = find_value
