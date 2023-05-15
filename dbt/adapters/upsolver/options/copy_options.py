@@ -30,19 +30,14 @@ Copy_options = {
   },
   "postgres": {
     "source_options": {
-        "bucket": {"type": "text", "editable": False, "optional": False},
-        "prefix": {"type": "text", "editable": False, "optional": True}
+        "table_include_list": {"type": "list", "editable": False, "optional": False},
+        "column_exclude_list": {"type": "list", "editable": False, "optional": True}
     },
     "job_options": {
-        "table_include_list": {"type": "list", "editable": False, "optional": True},
         "skip_snapshots": {"type": "boolean", "editable": False, "optional": True},
-        "column_exclude_list": {"type": "list", "editable": False, "optional": True},
         "publication_name": {"type": "text", "editable": False, "optional": False},
-        "file_pattern": {"type": "text", "editable": False, "optional": True},
-        "delete_files_after_load": {"type": "boolean", "editable": False, "optional": True},
         "end_at": {"type": "value", "editable": True, "optional": True},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True},
-        "run_parallelism": {"type": "integer", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
     }
   },
