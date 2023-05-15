@@ -80,8 +80,11 @@ class UpsolverAdapter(adapter_cls):
         for option, value in config_options.items():
             find_value = options.get(option.lower(), None)
             if find_value:
-                if options[option.lower()]['type'] == 'list' and isinstance(value, str):
-                    value = f"('{value}')"
+                if options[option.lower()]['type'] == 'list':
+                    if not isinstance(value, str):
+                        value = f"('{' '.join(str(x) for x in value)}')"
+                    else:
+                        value = f"('{value}')"
                 enriched_options[option] = find_value
                 enriched_options[option]['value'] = value
             else:
