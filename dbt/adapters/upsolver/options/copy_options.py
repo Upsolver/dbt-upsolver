@@ -39,7 +39,8 @@ Copy_options = {
         "publication_name": {"type": "text", "editable": False, "optional": False},
         "end_at": {"type": "value", "editable": True, "optional": True},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True},
-        "comment": {"type": "text", "editable": True, "optional": True}
+        "comment": {"type": "text", "editable": True, "optional": True},
+        "parse_json_columns": {"type": "boolean", "editable": False, "optional": False}
     }
   },
   "s3": {
