@@ -1,4 +1,4 @@
-{% macro get_create_incert_job_sql(job_identifier, table, sync, options, map_columns_by_name) -%}
+{% macro get_create_insert_job_sql(job_identifier, table, sync, options, map_columns_by_name) -%}
 
   {% set enriched_options = adapter.enrich_options(options, 'upsolver_data_lake', 'transformation_options') %}
 

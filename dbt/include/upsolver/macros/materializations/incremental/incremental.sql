@@ -42,7 +42,7 @@
         {{ get_create_merge_job_sql(job_identifier, table_relation, sync,
                                     options, primary_key, delete_condition) }}
       {% elif incremental_strategy == 'insert' %}
-        {{ get_create_incert_job_sql(job_identifier,
+        {{ get_create_insert_job_sql(job_identifier,
                                     table_relation, sync, options,
                                     map_columns_by_name) }}
 
