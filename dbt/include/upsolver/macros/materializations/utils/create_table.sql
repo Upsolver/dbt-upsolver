@@ -7,7 +7,7 @@
   {%- set columns_with_types = adapter.get_columns_names_with_types(partition_by + primary_key) -%}
   {%- set columns_partitioned_by  = adapter.get_columns_names(partition_by) -%}
   {%- set columns_primary_key  = adapter.get_columns_names(primary_key) -%}
-  {% set enriched_options = adapter.enrich_options(options, None, 'table_options') %}
+  {% set enriched_options = adapter.enrich_options(options, 'datalake', 'target_options') %}
   {% set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') %}
 
   {% if old_relation %}

@@ -35,7 +35,7 @@ Transformation_options = {
         "run_parallelism": {"type": "integer", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
   },
-    'upsolver_data_lake': {
+    'datalake': {
         "add_missing_columns": {"type": "boolean", "editable": False, "optional": True},
         "run_interval": {"type": "ineger", "editable": False, "optional": True},
         "start_from": {"type": "value", "editable": False, "optional": True},

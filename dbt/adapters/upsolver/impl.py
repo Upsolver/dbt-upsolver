@@ -7,8 +7,7 @@ from dbt.adapters.base.meta import available
 from dbt.adapters.upsolver.options.copy_options import Copy_options
 from dbt.adapters.upsolver.options.connection_options import Connection_options
 from dbt.adapters.upsolver.options.transformation_options import Transformation_options
-from dbt.adapters.upsolver.options.table_options import Table_options
-from dbt.adapters.upsolver.options.materialized_view_options import Materialized_view_options
+from dbt.adapters.upsolver.options.target_options import Target_options
 import agate
 import datetime
 import re
@@ -101,10 +100,8 @@ class UpsolverAdapter(adapter_cls):
             options = Connection_options[source.lower()]
         elif options_type == 'transformation_options':
             options = Transformation_options[source.lower()]
-        elif options_type == 'table_options':
-            options = Table_options
-        elif options_type == 'materialized_view_options':
-            options = Materialized_view_options
+        elif options_type == 'target_options':
+            options = Target_options[source.lower()]
         else:
             options = Copy_options[source.lower()][options_type]
         return options

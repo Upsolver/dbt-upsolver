@@ -6,6 +6,8 @@
   {% set sync = config.get('sync', False) %}
   {% set options = config.get('options', {}) %}
   {% set source = config.get('source', none) %}
+  {% set target_type = config.get('target_type', 'datalake') %}
+  {% set target_connection = config.get('target_connection', none) %}
   {% set delete_condition = config.get('delete_condition', False) %}
   {% set partition_by = config.get('partition_by', []) %}
   {% set primary_key = config.get('primary_key', []) %}
@@ -20,17 +22,24 @@
                                                 database=database,
                                                 type='incremental') -%}
 
-  {%- set table_relation = api.Relation.create(identifier=identifier,
-                                                    schema=schema,
-                                                    database=database,
-                                                    type='table') -%}
 
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
 
-  {%- call statement('create_table_if_not_exists') -%}
-    {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
-  {%- endcall -%}
+
+  {% if target_type  == 'datalake' %}
+    {%- set table_relation = api.Relation.create(identifier=identifier,
+                                                 schema=schema,
+                                                 database=database,
+                                                 type='table') -%}
+    {%- set into_relation = table_relation -%}
+    {%- call statement('create_table_if_not_exists') -%}
+      {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
+    {%- endcall -%}
+    {%- set into_relation = table_relation -%}
+  {%- else -%}
+    {%- set into_relation = target_connection + '.' + schema + '.' + nidentifier -%}
+  {%- endif %}
 
   {% if old_relation %}
     {% call statement('main') -%}
@@ -39,15 +48,15 @@
   {% else %}
     {% call statement('main') -%}
       {% if incremental_strategy == 'merge' %}
-        {{ get_create_merge_job_sql(job_identifier, table_relation, sync,
+        {{ get_create_merge_job_sql(job_identifier, into_relation, sync,
                                     options, primary_key, delete_condition) }}
       {% elif incremental_strategy == 'insert' %}
-        {{ get_create_insert_job_sql(job_identifier,
-                                    table_relation, sync, options,
+        {{ get_create_incert_job_sql(job_identifier,
+                                    into_relation, sync, options,
                                     map_columns_by_name) }}
 
       {% else  %}
-        {{ get_create_copy_job_sql(job_identifier, sql,
+        {{ get_create_copy_job_sql(into_relation, sql,
                                    table_relation, sync, options, source) }}
 
       {% endif %}
@@ -60,5 +69,9 @@
   {{ run_hooks(post_hooks, inside_transaction=False) }}
   {{ run_hooks(post_hooks, inside_transaction=True) }}
 
-  {{ return({'relations': [target_relation, table_relation]}) }}
+  {% if source.lower()  == 'datalake' %}
+    {{ return({'relations': [target_relation, table_relation]}) }}
+  {% else  %}
+    {{ return({'relations': [target_relation]}) }}
+  {%- endif %}
 {% endmaterialization %}
