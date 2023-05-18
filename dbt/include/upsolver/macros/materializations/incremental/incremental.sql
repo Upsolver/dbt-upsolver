@@ -37,7 +37,6 @@
     {%- call statement('create_table_if_not_exists') -%}
       {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
     {%- endcall -%}
-    {%- set into_relation = table_relation -%}
   {%- else -%}
     {%- set into_relation = target_connection + '.' + target_schema + '.' + identifier -%}
   {%- endif %}
