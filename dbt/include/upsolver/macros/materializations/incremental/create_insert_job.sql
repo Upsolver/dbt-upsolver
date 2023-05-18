@@ -1,4 +1,4 @@
-{% macro get_create_insert_job_sql(job_identifier, into_relation, sync, options, map_columns_by_name) -%}
+{% macro get_create_insert_job_sql(job_identifier, into_relation, sync, options, map_columns_by_name, target_type) -%}
 
   {% set enriched_options = adapter.enrich_options(options, 'datalake', 'transformation_options') %}
 

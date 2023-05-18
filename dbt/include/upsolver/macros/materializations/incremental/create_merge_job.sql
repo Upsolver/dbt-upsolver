@@ -1,4 +1,4 @@
-{% macro get_create_merge_job_sql(job_identifier, into_relation, sync, options, primary_key, delete_condition) -%}
+{% macro get_create_merge_job_sql(job_identifier, into_relation, sync, options, primary_key, delete_condition, target_type) -%}
 
   {% set enriched_options = adapter.enrich_options(options, 'datalake', 'transformation_options') %}
 

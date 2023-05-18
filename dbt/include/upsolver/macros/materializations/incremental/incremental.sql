@@ -8,6 +8,7 @@
   {% set source = config.get('source', none) %}
   {% set target_type = config.get('target_type', 'datalake') %}
   {% set target_connection = config.get('target_connection', none) %}
+  {% set target_schema = config.get('target_schema', schema) %}
   {% set delete_condition = config.get('delete_condition', False) %}
   {% set partition_by = config.get('partition_by', []) %}
   {% set primary_key = config.get('primary_key', []) %}
@@ -38,7 +39,7 @@
     {%- endcall -%}
     {%- set into_relation = table_relation -%}
   {%- else -%}
-    {%- set into_relation = target_connection + '.' + schema + '.' + nidentifier -%}
+    {%- set into_relation = target_connection + '.' + target_schema + '.' + identifier -%}
   {%- endif %}
 
   {% if old_relation %}
@@ -49,15 +50,17 @@
     {% call statement('main') -%}
       {% if incremental_strategy == 'merge' %}
         {{ get_create_merge_job_sql(job_identifier, into_relation, sync,
-                                    options, primary_key, delete_condition) }}
+                                    options, primary_key, delete_condition,
+                                    target_type) }}
       {% elif incremental_strategy == 'insert' %}
-        {{ get_create_incert_job_sql(job_identifier,
+        {{ get_create_insert_job_sql(job_identifier,
                                     into_relation, sync, options,
-                                    map_columns_by_name) }}
+                                    map_columns_by_name, target_type) }}
 
       {% else  %}
-        {{ get_create_copy_job_sql(into_relation, sql,
-                                   table_relation, sync, options, source) }}
+        {{ get_create_copy_job_sql(job_identifier, sql,
+                                   into_relation, sync, options, source,
+                                   target_type) }}
 
       {% endif %}
     {%- endcall %}
@@ -69,7 +72,7 @@
   {{ run_hooks(post_hooks, inside_transaction=False) }}
   {{ run_hooks(post_hooks, inside_transaction=True) }}
 
-  {% if source.lower()  == 'datalake' %}
+  {% if target_type  == 'datalake' %}
     {{ return({'relations': [target_relation, table_relation]}) }}
   {% else  %}
     {{ return({'relations': [target_relation]}) }}
