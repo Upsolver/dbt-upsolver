@@ -1,18 +1,18 @@
 {% materialization incremental, adapter='upsolver' %}
 
   {%- set identifier = model['alias'] -%}
-  {% set incremental_strategy = config.get('incremental_strategy', False) %}
-  {% set partition_by = config.get('partition_by', []) %}
-  {% set sync = config.get('sync', False) %}
-  {% set options = config.get('options', {}) %}
-  {% set source = config.get('source', none) %}
-  {% set target_type = config.get('target_type', 'datalake') %}
-  {% set target_connection = config.get('target_connection', none) %}
-  {% set target_schema = config.get('target_schema', schema) %}
-  {% set delete_condition = config.get('delete_condition', False) %}
-  {% set partition_by = config.get('partition_by', []) %}
-  {% set primary_key = config.get('primary_key', []) %}
-  {% set map_columns_by_name = config.get('map_columns_by_name', False) %}
+  {%- set model_config = model['config'] -%}
+  {% set incremental_strategy = adapter.get(model_config, 'incremental_strategy', False) %}
+  {% set sync = adapter.get(model_config, 'sync', False) %}
+  {% set options = adapter.get(model_config, 'options', {}) %}
+  {% set source = adapter.get(model_config, 'source') %}
+  {% set target_type = adapter.require(model_config, 'target_type').lower() %}
+  {% set target_connection = adapter.get(model_config, 'target_connection') %}
+  {% set target_schema = adapter.get(model_config, 'target_schema', schema) %}
+  {% set delete_condition = adapter.get(model_config, 'delete_condition', False) %}
+  {% set partition_by = adapter.get(model_config, 'partition_by', []) %}
+  {% set primary_key = adapter.get(model_config, 'primary_key', []) %}
+  {% set map_columns_by_name = adapter.get(model_config, 'map_columns_by_name', False) %}
   {% set job_identifier = identifier + '_job' %}
 
   {%- set old_relation = adapter.get_relation(identifier=job_identifier,
@@ -26,6 +26,7 @@
 
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
+  {{ log("model[config]: " ~ model['config'] ) }}
 
 
   {% if target_type  == 'datalake' %}

@@ -1,8 +1,8 @@
 {% materialization connection, adapter='upsolver' %}
   {%- set identifier = model['alias'] -%}
-
-  {% set connection_type = config.require('connection_type') %}
-  {% set connection_options = config.require('connection_options') %}
+  {%- set model_config = model['config'] -%}
+  {% set connection_type = adapter.require(model_config, 'connection_type') %}
+  {% set connection_options = adapter.require(model_config, 'connection_options') %}
   {% set enriched_options = adapter.enrich_options(connection_options, connection_type, 'connection_options') %}
   {% set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') %}
 

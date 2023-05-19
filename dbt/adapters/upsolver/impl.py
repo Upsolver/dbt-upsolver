@@ -49,7 +49,7 @@ class UpsolverAdapter(adapter_cls):
                                       .translate(str.maketrans({'\"':'', '\'':''}))
             return connection_identifier
         except Exception:
-            raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql:\n{sql}")
+            raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql: {sql}")
 
     @available
     def get_columns_names_with_types(self, list_dict):
@@ -94,6 +94,22 @@ class UpsolverAdapter(adapter_cls):
     def filter_options(self, options, parametr):
         editable = {key:val for key, val in options.items() if val[parametr] == True}
         return editable
+
+    @available
+    def get(self, config, key, default=None):
+        config = {k.lower(): v for k, v in config.items()}
+        value = config.get(key, default)
+        return value
+
+    @available
+    def require(self, config, key):
+        config = {k.lower(): v for k, v in config.items()}
+        value = config.get(key, None)
+        if value:
+            return value
+        else:
+            raise dbt.exceptions.ParsingError(f"Required option is missing: {key}")
+
 
     def get_options(self, source, options_type):
         if options_type == 'connection_options':

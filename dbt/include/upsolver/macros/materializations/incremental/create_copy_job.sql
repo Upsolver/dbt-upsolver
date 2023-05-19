@@ -4,6 +4,7 @@
     {% set job_options, source_options = adapter.separate_options(options, source) %}
     {%- if target_type != 'datalake' -%}
       {% set target_options = adapter.enrich_options(options, target_type, 'target_options') %}
+      {% set target_type = target_type %}
     {%- else -%}
       {% set target_options = {} %}
       {% set target_type = '' %}
