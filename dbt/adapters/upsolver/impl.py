@@ -112,15 +112,18 @@ class UpsolverAdapter(adapter_cls):
 
 
     def get_options(self, source, options_type):
-        if options_type == 'connection_options':
-            options = Connection_options[source.lower()]
-        elif options_type == 'transformation_options':
-            options = Transformation_options[source.lower()]
-        elif options_type == 'target_options':
-            options = Target_options[source.lower()]
-        else:
-            options = Copy_options[source.lower()][options_type]
-        return options
+        try:
+            if options_type == 'connection_options':
+                options = Connection_options[source.lower()]
+            elif options_type == 'transformation_options':
+                options = Transformation_options[source.lower()]
+            elif options_type == 'target_options':
+                options = Target_options[source.lower()]
+            else:
+                options = Copy_options[source.lower()][options_type]
+            return options
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Undefined option value: {source}")
 
     def list_relations_without_caching(
         self,
