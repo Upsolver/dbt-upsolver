@@ -6,7 +6,7 @@
   {% set sync = adapter.get(model_config, 'sync', False) %}
   {% set options = adapter.get(model_config, 'options', {}) %}
   {% set source = adapter.get(model_config, 'source') %}
-  {% set target_type = adapter.require(model_config, 'target_type').lower() %}
+  {% set target_type = adapter.get(model_config, 'target_type', 'datalake').lower() %}
   {% set target_connection = adapter.get(model_config, 'target_connection') %}
   {% set target_schema = adapter.get(model_config, 'target_schema', schema) %}
   {% set delete_condition = adapter.get(model_config, 'delete_condition', False) %}
