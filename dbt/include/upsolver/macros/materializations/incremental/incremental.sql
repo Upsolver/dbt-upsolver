@@ -7,7 +7,6 @@
   {% set options = adapter.get(model_config, 'options', {}) %}
   {% set source = adapter.get(model_config, 'source') %}
   {% set target_type = adapter.get(model_config, 'target_type', 'datalake').lower() %}
-  {% set target_connection = adapter.get(model_config, 'target_connection') %}
   {% set target_schema = adapter.get(model_config, 'target_schema', schema) %}
   {% set delete_condition = adapter.get(model_config, 'delete_condition', False) %}
   {% set partition_by = adapter.get(model_config, 'partition_by', []) %}
@@ -39,6 +38,7 @@
       {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
     {%- endcall -%}
   {%- else -%}
+    {% set target_connection = adapter.require(model_config, 'target_connection') %}
     {%- set into_relation = target_connection + '.' + target_schema + '.' + identifier -%}
   {%- endif %}
 
