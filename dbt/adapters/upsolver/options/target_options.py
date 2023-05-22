@@ -19,7 +19,7 @@ Target_options = {
       "compute_cluster": {"type": "identifier", "editable": True, "optional": True},
   },
   "snowflake": {
-        "column_transformations": {"type": "list_dict", "editable": False, "optional": True},
+        "column_transformations": {"type": "dict", "editable": False, "optional": True},
         "deduplicate_with": {"type": "dict", "editable": False, "optional": True},
         "exclude_columns": {"type": "list", "editable": False, "optional": True},
         "create_table_if_missing": {"type": "boolean", "editable": False, "optional": True},
