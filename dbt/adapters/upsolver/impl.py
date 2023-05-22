@@ -7,8 +7,7 @@ from dbt.adapters.base.meta import available
 from dbt.adapters.upsolver.options.copy_options import Copy_options
 from dbt.adapters.upsolver.options.connection_options import Connection_options
 from dbt.adapters.upsolver.options.transformation_options import Transformation_options
-from dbt.adapters.upsolver.options.table_options import Table_options
-from dbt.adapters.upsolver.options.materialized_view_options import Materialized_view_options
+from dbt.adapters.upsolver.options.target_options import Target_options
 import agate
 import datetime
 import re
@@ -50,7 +49,7 @@ class UpsolverAdapter(adapter_cls):
                                       .translate(str.maketrans({'\"':'', '\'':''}))
             return connection_identifier
         except Exception:
-            raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql:\n{sql}")
+            raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql: {sql}")
 
     @available
     def get_columns_names_with_types(self, list_dict):
@@ -73,6 +72,31 @@ class UpsolverAdapter(adapter_cls):
         source_options = self.enrich_options(config_options, source, 'source_options')
         return job_options, source_options
 
+    def render_option_from_dict(self, option_value):
+        res = []
+        try:
+            for key, value in option_value.items():
+                item = [f'{key}=']
+                if isinstance(value, list):
+                    item.append('(')
+                    item.append(' ,'.join(value))
+                    item.append(')')
+                else:
+                    item.append(value)
+                res.append(''.join(item))
+            return f"({' ,'.join(res)})"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}")
+
+    def render_option_from_list(self, option_value):
+        try:
+            if not isinstance(option_value, str):
+                return tuple(i for i in option_value)
+            else:
+                return f"('{option_value}')"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}")
+
     @available
     def enrich_options(self, config_options, source, options_type):
         options = self.get_options(source, options_type)
@@ -81,10 +105,9 @@ class UpsolverAdapter(adapter_cls):
             find_value = options.get(option.lower(), None)
             if find_value:
                 if options[option.lower()]['type'] == 'list':
-                    if not isinstance(value, str):
-                        value = tuple(i for i in value)
-                    else:
-                        value = f"('{value}')"
+                    value = self.render_option_from_list(value)
+                elif options[option.lower()]['type'] == 'dict':
+                    value = self.render_option_from_dict(value)
                 enriched_options[option] = find_value
                 enriched_options[option]['value'] = value
             else:
@@ -96,18 +119,35 @@ class UpsolverAdapter(adapter_cls):
         editable = {key:val for key, val in options.items() if val[parametr] == True}
         return editable
 
-    def get_options(self, source, options_type):
-        if options_type == 'connection_options':
-            options = Connection_options[source.lower()]
-        elif options_type == 'transformation_options':
-            options = Transformation_options[source.lower()]
-        elif options_type == 'table_options':
-            options = Table_options
-        elif options_type == 'materialized_view_options':
-            options = Materialized_view_options
+    @available
+    def get(self, config, key, default=None):
+        config = {k.lower(): v for k, v in config.items()}
+        value = config.get(key, default)
+        return value
+
+    @available
+    def require(self, config, key):
+        config = {k.lower(): v for k, v in config.items()}
+        value = config.get(key, None)
+        if value:
+            return value
         else:
-            options = Copy_options[source.lower()][options_type]
-        return options
+            raise dbt.exceptions.ParsingError(f"Required option is missing: {key}")
+
+
+    def get_options(self, source, options_type):
+        try:
+            if options_type == 'connection_options':
+                options = Connection_options[source.lower()]
+            elif options_type == 'transformation_options':
+                options = Transformation_options[source.lower()]
+            elif options_type == 'target_options':
+                options = Target_options[source.lower()]
+            else:
+                options = Copy_options[source.lower()][options_type]
+            return options
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Undefined option value: {source}")
 
     def list_relations_without_caching(
         self,
