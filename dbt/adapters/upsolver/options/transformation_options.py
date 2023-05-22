@@ -13,7 +13,7 @@ Transformation_options = {
         "output_offset": {"type": "integer", "editable": False, "optional": True},
         "location": {"type": "text", "editable": False, "optional": True}
   },
-  'elasticsearch': {
+  "elasticsearch": {
         "run_interval": {"type": "ineger", "editable": False, "optional": True},
         "start_from": {"type": "value", "editable": False, "optional": True},
         "end_at": {"type": "value", "editable": True, "optional": True},
@@ -25,7 +25,8 @@ Transformation_options = {
         "index_partition_size": {"type": "value", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
   },
-  'snowflake': {
+  "snowflake": {
+        "add_missing_columns": {"type": "boolean", "editable": False, "optional": True},
         "run_interval": {"type": "ineger", "editable": False, "optional": True},
         "start_from": {"type": "value", "editable": False, "optional": True},
         "end_at": {"type": "value", "editable": True, "optional": True},
@@ -35,7 +36,7 @@ Transformation_options = {
         "run_parallelism": {"type": "integer", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
   },
-    'datalake': {
+    "datalake": {
         "add_missing_columns": {"type": "boolean", "editable": False, "optional": True},
         "run_interval": {"type": "ineger", "editable": False, "optional": True},
         "start_from": {"type": "value", "editable": False, "optional": True},
@@ -46,7 +47,7 @@ Transformation_options = {
         "run_parallelism": {"type": "integer", "editable": True, "optional": True},
         "comment": {"type": "text", "editable": True, "optional": True}
     },
-    'redshift': {
+    "redshift": {
         "run_interval": {"type": "ineger", "editable": False, "optional": True},
         "start_from": {"type": "value", "editable": False, "optional": True},
         "end_at": {"type": "value", "editable": True, "optional": True},
