@@ -1,5 +1,6 @@
 {{ config(  materialized='incremental',
             incremental_strategy='merge',
+            target_type = 'Datalake',
             map_columns_by_name=True,
             sync=True,
             options={'START_FROM': 'NOW',

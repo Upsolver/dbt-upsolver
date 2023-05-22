@@ -1,6 +1,7 @@
 {{ config(  materialized='incremental',
             sync=True,
             source = 'S3',
+            target_type = 'Datalake',
         	  options={
           	'CONTENT_TYPE': 'JSON',
             'LOCATION': 's3://upsolver-samples/orders/'

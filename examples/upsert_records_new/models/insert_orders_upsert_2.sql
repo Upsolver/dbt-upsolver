@@ -1,6 +1,7 @@
 {{ config(  materialized='incremental',
             sync=True,
             map_columns_by_name=True,
+            target_type = 'Datalake',
             incremental_strategy='insert',
             options={
               	'START_FROM': 'BEGINNING',
