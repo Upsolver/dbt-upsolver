@@ -8,6 +8,7 @@
   {%- set source = adapter.get(model_config, 'source') -%}
   {%- set target_type = adapter.get(model_config, 'target_type', 'datalake').lower() -%}
   {%- set target_schema = adapter.get(model_config, 'target_schema', schema) -%}
+  {%- set target_table_alias = adapter.get(model_config, 'target_table_alias', identifier) -%}
   {%- set delete_condition = adapter.get(model_config, 'delete_condition', False) -%}
   {%- set partition_by = adapter.get(model_config, 'partition_by', []) -%}
   {%- set primary_key = adapter.get(model_config, 'primary_key', []) -%}
@@ -29,7 +30,7 @@
 
 
   {% if target_type  == 'datalake' %}
-    {%- set table_relation = api.Relation.create(identifier=identifier,
+    {%- set table_relation = api.Relation.create(identifier=target_table_alias,
                                                  schema=schema,
                                                  database=database,
                                                  type='table') -%}
@@ -39,7 +40,7 @@
     {%- endcall -%}
   {%- else -%}
     {% set target_connection = adapter.require(model_config, 'target_connection') %}
-    {%- set into_relation = target_connection + '.' + target_schema + '.' + identifier -%}
+    {%- set into_relation = target_connection + '.' + target_schema + '.' + target_table_alias -%}
   {%- endif %}
 
   {%- if old_relation -%}
