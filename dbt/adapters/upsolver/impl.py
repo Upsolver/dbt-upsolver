@@ -73,8 +73,8 @@ class UpsolverAdapter(adapter_cls):
         return job_options, source_options
 
     def render_option_from_dict(self, option_value):
-        res = []
         try:
+            res = []
             for key, value in option_value.items():
                 item = [f'{key}=']
                 if isinstance(value, list):
@@ -86,16 +86,16 @@ class UpsolverAdapter(adapter_cls):
                 res.append(''.join(item))
             return f"({' ,'.join(res)})"
         except Exception:
-            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}")
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
 
     def render_option_from_list(self, option_value):
         try:
-            if not isinstance(option_value, str):
+            if isinstance(option_value, list) and len(option_value) > 1:
                 return tuple(i for i in option_value)
             else:
-                return f"('{option_value}')"
+                return f"('{''.join(option_value)}')"
         except Exception:
-            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}")
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: list of strings")
 
     @available
     def enrich_options(self, config_options, source, options_type):
