@@ -7,24 +7,24 @@
   {%- set columns_with_types = adapter.get_columns_names_with_types(partition_by + primary_key) -%}
   {%- set columns_partitioned_by  = adapter.get_columns_names(partition_by) -%}
   {%- set columns_primary_key  = adapter.get_columns_names(primary_key) -%}
-  {% set enriched_options = adapter.enrich_options(options, 'datalake', 'target_options') %}
-  {% set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') %}
+  {%- set enriched_options = adapter.enrich_options(options, 'datalake', 'target_options') -%}
+  {%- set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') -%}
 
-  {% if old_relation %}
+  {%- if old_relation -%}
     ALTER TABLE {{target_relation}}
-      {{ render_options(enriched_editable_options, 'alter') }}
-  {% else %}
+    {{ render_options(enriched_editable_options, 'alter') }}
+  {%- else -%}
     CREATE TABLE {{ target_relation }}
     ({{ columns_with_types }})
-    {% if partition_by %}
-      PARTITIONED BY
+    {%- if partition_by %}
+    PARTITIONED BY
       {{ columns_partitioned_by }}
-    {% endif %}
-    {% if primary_key %}
-      PRIMARY KEY
+    {%- endif -%}
+    {%- if primary_key %}
+    PRIMARY KEY
       {{ columns_primary_key }}
-    {% endif %}
+    {%- endif %}
     {{ render_options(enriched_options, 'create') }}
-  {% endif %}
+  {%- endif -%}
 
 {%- endmacro %}

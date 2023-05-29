@@ -11,5 +11,5 @@
 
 SELECT
  *
-FROM {{ source('upsert_records_new', 'orders_raw_data_for_upsert_2') }}
+FROM {{ source('upsert_records_new', 'orders_raw_data_for_upsert') }}
 WHERE $event_time BETWEEN run_start_time() AND run_end_time()

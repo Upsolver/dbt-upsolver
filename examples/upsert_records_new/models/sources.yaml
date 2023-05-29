@@ -5,6 +5,6 @@ sources:
     database: default_glue_catalog
     schema: database_16e61b
     tables:
-      - name: insert_orders_upsert_2
-      - name: merge_orders_upsert_2
-      - name: orders_raw_data_for_upsert_2
+      - name: insert_orders_upsert
+      - name: merge_orders_upsert
+      - name: orders_raw_data_for_upsert
