@@ -66,10 +66,14 @@
 
 {% macro upsolver__list_schemas(database) -%}
 '''Returns a table of unique schemas.'''
-/*
-  1. search schemea by specific name
-  2. create a table with names
-*/
+  {% set sync = adapter.to_sliteral(database) %}
+  {% call statement('list_schemas', fetch_result=True, auto_begin=False) -%}
+      select schema from system.information_schema.tables
+      where catalog = {{database}}
+      group by 1;
+  {% endcall %}
+
+  {{ return(load_result('list_schemas').table) }}
 {% endmacro %}
 
 {% macro upsolver__rename_relation(from_relation, to_relation) -%}
@@ -96,3 +100,22 @@
 {% macro upsolver__create_arbitrary_object(sql) -%}
     {{ sql }}
 {%- endmacro %}
+
+{% macro upsolver_list_tables(schema_relation) -%}
+  {% call statement('upsolver_list_tables', fetch_result=True) -%}
+    select
+      '{{ schema_relation.database }}' as database,
+      name,
+      '{{ schema_relation.schema }}' as schema,
+      {% if relation_type == 'job' %}
+        'incremental' as type
+      {% else %}
+        '{{ relation_type }}' as type
+      {% endif %}
+    from system.information_schema."{{ source }}"
+      {% if relation_type in ['table', 'view'] %}
+        where schema = '{{ schema_relation.schema }}'
+      {% endif %}
+  {% endcall %}
+  {{ return(load_result('list_relation_without_caching').table) }}
+{% endmacro %}
