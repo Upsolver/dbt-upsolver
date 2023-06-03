@@ -154,8 +154,8 @@ class UpsolverAdapter(adapter_cls):
         return agate.Table.merge(tables)
 
     @available
-    def to_sliteral(value):
-        return str(value)
+    def trim_quotes(self, value):
+        return value.replace('"', '')
 
     def list_relations_without_caching(
         self,

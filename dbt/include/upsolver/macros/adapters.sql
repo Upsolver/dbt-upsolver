@@ -66,10 +66,10 @@
 
 {% macro upsolver__list_schemas(database) -%}
 '''Returns a table of unique schemas.'''
-  {% set sync = adapter.to_sliteral(database) %}
+  {% set database = adapter.trim_quotes(database) %}
   {% call statement('list_schemas', fetch_result=True, auto_begin=False) -%}
       select schema from system.information_schema.tables
-      where catalog = {{database}}
+      where catalog = '{{database}}'
       group by 1;
   {% endcall %}
 
