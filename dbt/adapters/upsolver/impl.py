@@ -149,6 +149,14 @@ class UpsolverAdapter(adapter_cls):
         except Exception:
             raise dbt.exceptions.ParsingError(f"Undefined option value: {source}")
 
+    @available
+    def merge_tables(self, tables):
+        return agate.Table.merge(tables)
+
+    @available
+    def trim_quotes(self, value):
+        return value.replace('"', '')
+
     def list_relations_without_caching(
         self,
         schema_relation: UpsolverRelation,

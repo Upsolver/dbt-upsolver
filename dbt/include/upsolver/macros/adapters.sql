@@ -28,18 +28,21 @@
 */
 {% endmacro %}
 
+
 {% macro upsolver__get_columns_in_relation(relation) -%}
-'''Returns a list of Columns in a table.'''
-/*
-  1. select as many values from column as needed
-  2. search relations to columns
-  3. where table name is equal to the relation identifier
-  4. if a relation schema exists and table schema is equal to the relation schema
-  5. order in whatever way you want to call.
-  6. create a table by loading result from call
-  7. return new table
-*/
+  {% if relation.type == 'table'  %}
+  {% call statement('get_columns_relation', fetch_result=True, auto_begin=False) -%}
+      SELECT * FROM system.information_schema.columns
+      where "catalog" = {{relation.database}}
+      and "schema" = {{relation.schema}}
+      and AND "table" = {{relation.identifier}}
+
+  {% endcall %}
+  {% endif %}
+
+  {{ return(load_result('get_columns_relation').table) }}
 {% endmacro %}
+
 
 {% macro list_relation_without_caching(schema_relation, relation_type) -%}
   {% set source = relation_type +'s' %}
@@ -63,10 +66,14 @@
 
 {% macro upsolver__list_schemas(database) -%}
 '''Returns a table of unique schemas.'''
-/*
-  1. search schemea by specific name
-  2. create a table with names
-*/
+  {% set database = adapter.trim_quotes(database) %}
+  {% call statement('list_schemas', fetch_result=True, auto_begin=False) -%}
+      select schema from system.information_schema.tables
+      where catalog = '{{database}}'
+      group by 1;
+  {% endcall %}
+
+  {{ return(load_result('list_schemas').table) }}
 {% endmacro %}
 
 {% macro upsolver__rename_relation(from_relation, to_relation) -%}
@@ -93,3 +100,22 @@
 {% macro upsolver__create_arbitrary_object(sql) -%}
     {{ sql }}
 {%- endmacro %}
+
+{% macro upsolver_list_tables(schema_relation) -%}
+  {% call statement('upsolver_list_tables', fetch_result=True) -%}
+    select
+      '{{ schema_relation.database }}' as database,
+      name,
+      '{{ schema_relation.schema }}' as schema,
+      {% if relation_type == 'job' %}
+        'incremental' as type
+      {% else %}
+        '{{ relation_type }}' as type
+      {% endif %}
+    from system.information_schema."{{ source }}"
+      {% if relation_type in ['table', 'view'] %}
+        where schema = '{{ schema_relation.schema }}'
+      {% endif %}
+  {% endcall %}
+  {{ return(load_result('list_relation_without_caching').table) }}
+{% endmacro %}

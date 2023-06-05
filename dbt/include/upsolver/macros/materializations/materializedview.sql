@@ -3,7 +3,7 @@
   {%- set model_config = model['config'] -%}
   {% set sync = adapter.get(model_config, 'sync', False) %}
   {% set options = adapter.get(model_config, 'options', {}) %}
-  {% set enriched_options = adapter.enrich_options(options, materialized_view, 'target_options') %}
+  {% set enriched_options = adapter.enrich_options(options, 'materialized_view', 'target_options') %}
   {% set enriched_editable_options = adapter.filter_options(enriched_options, 'editable') %}
 
   {%- set old_relation = adapter.get_relation(identifier=identifier,
