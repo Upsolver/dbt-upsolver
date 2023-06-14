@@ -2,7 +2,7 @@ from dbt.adapters.sql import SQLAdapter as adapter_cls
 from dbt.adapters.upsolver import UpsolverConnectionManager
 from dbt.events import AdapterLogger
 from dbt.adapters.upsolver.relation import UpsolverRelation
-from typing import List, Optional, Dict, Any, Set
+from typing import List, Optional, Dict, Any, Set, Union
 from dbt.adapters.base.meta import available
 from dbt.adapters.base.impl import ConstraintSupport
 from dbt.contracts.graph.nodes import ColumnLevelConstraint, ConstraintType, ModelLevelConstraint
@@ -215,9 +215,11 @@ class UpsolverAdapter(adapter_cls):
         rendered_column_constraints = []
 
         for v in raw_columns.values():
+            column_name = v['name']
             for con in v.get("constraints", None):
                 constraint = cls._parse_column_constraint(con)
-                c = cls.process_parsed_constraint(constraint, cls.render_column_constraint)
+                render_func = cls.render_column_constraint
+                c = cls.process_parsed_constraint(constraint, column_name, cls.render_column_constraint)
                 if c is not None:
                     rendered_column_constraint = c
                 rendered_column_constraints.append(rendered_column_constraint)
@@ -225,21 +227,19 @@ class UpsolverAdapter(adapter_cls):
         return rendered_column_constraints
 
     @classmethod
-    def render_model_constraint(cls, constraint: ModelLevelConstraint) -> Optional[str]:
+    def render_model_constraint(cls, constraint: ModelLevelConstraint, column_name: str) -> Optional[str]:
         constraint_prefix = f"WITH EXPECTATION {constraint.name}"
-        column_list = ", ".join(constraint.columns)
         if constraint.type == ConstraintType.check and constraint.expression:
             return f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
         else:
             return None
 
     @classmethod
-    def render_column_constraint(cls, constraint: ColumnLevelConstraint) -> Optional[str]:
+    def render_column_constraint(cls, constraint: ColumnLevelConstraint, column_name: str) -> Optional[str]:
         constraint_expression = constraint.expression or ""
-        column_name = 'dddddd'
         rendered_column_constraint = None
         if constraint.type == ConstraintType.check and constraint_expression:
-            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.name else ""
+            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.name else f"WITH EXPECTATION check__{column_name}"
             rendered_column_constraint = f"{constraint_prefix} EXPECT {constraint_expression} ON VIOLATION WARN"
         elif constraint.type == ConstraintType.not_null:
             constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.expression else f"WITH EXPECTATION not_null__{column_name}"
@@ -248,3 +248,31 @@ class UpsolverAdapter(adapter_cls):
         if rendered_column_constraint:
             rendered_column_constraint = rendered_column_constraint.strip()
         return rendered_column_constraint
+
+    @classmethod
+    def render_raw_model_constraint(cls, raw_constraint: Dict[str, Any]) -> Optional[str]:
+        constraint = cls._parse_model_constraint(raw_constraint)
+        return cls.process_parsed_constraint(constraint, '', cls.render_model_constraint)
+
+    @classmethod
+    def process_parsed_constraint(
+        cls, parsed_constraint: Union[ColumnLevelConstraint, ModelLevelConstraint], column_name: str, render_func
+    ) -> Optional[str]:
+        if (
+            parsed_constraint.warn_unsupported
+            and cls.CONSTRAINT_SUPPORT[parsed_constraint.type] == ConstraintSupport.NOT_SUPPORTED
+        ):
+            warn_or_error(
+                ConstraintNotSupported(constraint=parsed_constraint.type.value, adapter=cls.type())
+            )
+        if (
+            parsed_constraint.warn_unenforced
+            and cls.CONSTRAINT_SUPPORT[parsed_constraint.type] == ConstraintSupport.NOT_ENFORCED
+        ):
+            warn_or_error(
+                ConstraintNotEnforced(constraint=parsed_constraint.type.value, adapter=cls.type())
+            )
+        if cls.CONSTRAINT_SUPPORT[parsed_constraint.type] != ConstraintSupport.NOT_SUPPORTED:
+            return render_func(parsed_constraint, column_name)
+
+        return None

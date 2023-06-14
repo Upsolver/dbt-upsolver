@@ -7,4 +7,36 @@ sources:
     tables:
       - name: insert_orders_upsert
       - name: merge_orders_upsert
-      - name: orders_raw_data_for_upsert
+      - name: orders_raw_data_for_upsert2
+
+
+models:
+  - name: orders_raw_data_for_upsert2
+
+    # required
+    config:
+      contract:
+        enforced: true
+
+    # model-level constraints
+    constraints:
+      - type: check
+        columns: ['order_date', 'event_date']
+        expression: "order_date <= event_date"
+        name: valid_order_date_from_event_date
+
+    columns:
+      - name: order_id
+        data_type: string
+
+        # column-level constraints
+        constraints:
+          - type: not_null
+          - type: check
+            expression: "REGEXP_LIKE(order_id, '^[0-9]{4}[a-z]{5}$')"
+            name: order_id_match_pattern
+
+      - name: event_date
+        data_type: string
+      - name: order_date
+        data_type: string
