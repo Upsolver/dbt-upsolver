@@ -2,8 +2,10 @@ from dbt.adapters.sql import SQLAdapter as adapter_cls
 from dbt.adapters.upsolver import UpsolverConnectionManager
 from dbt.events import AdapterLogger
 from dbt.adapters.upsolver.relation import UpsolverRelation
-from typing import List
+from typing import List, Optional, Dict, Any, Set
 from dbt.adapters.base.meta import available
+from dbt.adapters.base.impl import ConstraintSupport
+from dbt.contracts.graph.nodes import ColumnLevelConstraint, ConstraintType, ModelLevelConstraint
 from dbt.adapters.upsolver.options.copy_options import Copy_options
 from dbt.adapters.upsolver.options.connection_options import Connection_options
 from dbt.adapters.upsolver.options.transformation_options import Transformation_options
@@ -24,6 +26,14 @@ class UpsolverAdapter(adapter_cls):
 
     ConnectionManager = UpsolverConnectionManager
     Relation = UpsolverRelation
+
+    CONSTRAINT_SUPPORT = {
+        ConstraintType.check: ConstraintSupport.ENFORCED,
+        ConstraintType.not_null: ConstraintSupport.ENFORCED,
+        ConstraintType.unique: ConstraintSupport.NOT_SUPPORTED,
+        ConstraintType.primary_key: ConstraintSupport.NOT_SUPPORTED,
+        ConstraintType.foreign_key: ConstraintSupport.NOT_SUPPORTED,
+    }
 
     @classmethod
     def date_function(cls):
@@ -52,15 +62,7 @@ class UpsolverAdapter(adapter_cls):
             raise dbt.exceptions.ParsingError(f"Error while parsing connection name from sql: {sql}")
 
     @available
-    def get_columns_names_with_types(self, list_dict):
-        res = []
-        for col in list_dict:
-            if col.get('type'):
-                res.append(f"{col['field']} {col['type']}")
-        return ', '.join(set(res))
-
-    @available
-    def get_columns_names(self, list_dict):
+    def render_columns_names(self, list_dict):
         res = []
         for col in list_dict:
             res.append(col['field'])
@@ -184,3 +186,25 @@ class UpsolverAdapter(adapter_cls):
                 )
             )
         return relations
+
+    def render_raw_columns_from_columns(self, raw_columns: Dict[str, Dict[str, Any]]) -> List:
+        rendered_columns = []
+        columns = []
+        for v in raw_columns.values():
+            rendered_column = f"{v['name']} {v['data_type']}"
+            rendered_columns.append(rendered_column)
+
+        return rendered_columns
+
+    def render_columns_from_config(self, list_dict: List[Dict])-> List:
+        res = []
+        for col in list_dict:
+            if col.get('type'):
+                res.append(f"{col['field']} {col['type']}")
+        return res
+
+    @available
+    def render_columns(self, raw_columns_from_columns: Dict[str, Dict[str, Any]], raw_columns_from_config: List[Dict]) -> Set:
+        columns_from_columns = self.render_raw_columns_from_columns(raw_columns_from_columns)
+        columns_from_config = self.render_columns_from_config(raw_columns_from_config)
+        return ', '.join(set(columns_from_columns + columns_from_config))
