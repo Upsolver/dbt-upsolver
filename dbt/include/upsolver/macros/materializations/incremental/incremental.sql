@@ -26,6 +26,8 @@
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
   {{ log("model[config]: " ~ model['config'] ) }}
+  {{ log("model['columns']): " ~ model['columns'] ) }}
+  {{ log("model['constraints']: " ~ model['constraints'] ) }}
 
 
   {% if target_type  == 'datalake' %}

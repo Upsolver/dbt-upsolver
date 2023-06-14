@@ -208,3 +208,43 @@ class UpsolverAdapter(adapter_cls):
         columns_from_columns = self.render_raw_columns_from_columns(raw_columns_from_columns)
         columns_from_config = self.render_columns_from_config(raw_columns_from_config)
         return ', '.join(set(columns_from_columns + columns_from_config))
+
+    @available
+    @classmethod
+    def render_raw_columns_constraints(cls, raw_columns: Dict[str, Dict[str, Any]]) -> List:
+        rendered_column_constraints = []
+
+        for v in raw_columns.values():
+            for con in v.get("constraints", None):
+                constraint = cls._parse_column_constraint(con)
+                c = cls.process_parsed_constraint(constraint, cls.render_column_constraint)
+                if c is not None:
+                    rendered_column_constraint = c
+                rendered_column_constraints.append(rendered_column_constraint)
+
+        return rendered_column_constraints
+
+    @classmethod
+    def render_model_constraint(cls, constraint: ModelLevelConstraint) -> Optional[str]:
+        constraint_prefix = f"WITH EXPECTATION {constraint.name}"
+        column_list = ", ".join(constraint.columns)
+        if constraint.type == ConstraintType.check and constraint.expression:
+            return f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
+        else:
+            return None
+
+    @classmethod
+    def render_column_constraint(cls, constraint: ColumnLevelConstraint) -> Optional[str]:
+        constraint_expression = constraint.expression or ""
+        column_name = 'dddddd'
+        rendered_column_constraint = None
+        if constraint.type == ConstraintType.check and constraint_expression:
+            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.name else ""
+            rendered_column_constraint = f"{constraint_prefix} EXPECT {constraint_expression} ON VIOLATION WARN"
+        elif constraint.type == ConstraintType.not_null:
+            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.expression else f"WITH EXPECTATION not_null__{column_name}"
+            rendered_column_constraint = f"{constraint_prefix} EXPECT {column_name} IS NOT NULL ON VIOLATION WARN"
+
+        if rendered_column_constraint:
+            rendered_column_constraint = rendered_column_constraint.strip()
+        return rendered_column_constraint

@@ -20,5 +20,7 @@
     AS COPY FROM {{source}} {{connection_identifier}}
     {{ render_options(source_options, 'create') }}
     INTO {{target_type}} {{into_relation}}
+    {{ get_columns_constraints() }}
+    {{ get_model_constraints() }}
 
 {%- endmacro %}
