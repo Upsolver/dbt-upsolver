@@ -120,25 +120,28 @@
   {{ return(load_result('list_relation_without_caching').table) }}
 {% endmacro %}
 
-
-{% macro get_model_constraints() %}
-  {{ return(model_constraints()) }}
+{% macro get_add_constraints(row_constraints) %}
+  {{ return(create_constraints(row_constraints)) }}
 {% endmacro %}
 
-{% macro model_constraints() %}
-    {%- set raw_model_constraints = adapter.render_raw_model_constraints(raw_constraints=model['constraints']) -%}
-    {% for c in raw_model_constraints -%}
-        {{ c }}
-    {% endfor -%}
-{% endmacro %}
-
-{% macro get_columns_constraints() %}
-  {{ return(columns_constraints()) }}
-{% endmacro %}
-
-{% macro columns_constraints() %}
-    {%- set raw_column_constraints = adapter.render_raw_columns_constraints(raw_columns=model['columns']) -%}
-    {% for c in raw_column_constraints -%}
-      {{ c }}
+{% macro add_constraints(row_constraints) %}
+    {% for c in row_constraints -%}
+      WITH {{ c }}
     {% endfor %}
+{% endmacro %}
+
+{% macro get_validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)  %}
+  {{ return(validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)) }}
+{% endmacro %}
+
+{% macro validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)  %}
+
+  {% if (model_constraints or column_constraints) and incremental_strategy  and  incremental_strategy != 'copy' %}
+    {{ exceptions.raise_compiler_error("Constraints not avalible for incremental strategy " ~ incremental_strategy) }}
+  {% endif %}
+
+  {% if (model_constraints or column_constraints)  and  target_type  != 'datalake' %}
+    {{ exceptions.raise_compiler_error("Constraints not avalible for target " ~ incremental_strategy) }}
+  {% endif %}
+
 {% endmacro %}

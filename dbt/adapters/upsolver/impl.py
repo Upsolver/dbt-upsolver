@@ -228,7 +228,10 @@ class UpsolverAdapter(adapter_cls):
 
     @classmethod
     def render_model_constraint(cls, constraint: ModelLevelConstraint, column_name: str) -> Optional[str]:
-        constraint_prefix = f"WITH EXPECTATION {constraint.name}"
+        try:
+            constraint_prefix = f"EXPECTATION {constraint.name}"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Required properties is missing: constraints name")
         if constraint.type == ConstraintType.check and constraint.expression:
             return f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
         else:
@@ -239,10 +242,10 @@ class UpsolverAdapter(adapter_cls):
         constraint_expression = constraint.expression or ""
         rendered_column_constraint = None
         if constraint.type == ConstraintType.check and constraint_expression:
-            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.name else f"WITH EXPECTATION check__{column_name}"
+            constraint_prefix = f"EXPECTATION {constraint.name}" if constraint.name else f"EXPECTATION check__{column_name}"
             rendered_column_constraint = f"{constraint_prefix} EXPECT {constraint_expression} ON VIOLATION WARN"
         elif constraint.type == ConstraintType.not_null:
-            constraint_prefix = f"WITH EXPECTATION {constraint.name}" if constraint.expression else f"WITH EXPECTATION not_null__{column_name}"
+            constraint_prefix = f"EXPECTATION {constraint.name}" if constraint.expression else f"EXPECTATION not_null__{column_name}"
             rendered_column_constraint = f"{constraint_prefix} EXPECT {column_name} IS NOT NULL ON VIOLATION WARN"
 
         if rendered_column_constraint:

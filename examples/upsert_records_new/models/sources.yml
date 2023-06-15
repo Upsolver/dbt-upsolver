@@ -7,11 +7,12 @@ sources:
     tables:
       - name: insert_orders_upsert
       - name: merge_orders_upsert
-      - name: orders_raw_data_for_upsert2
+      - name: orders_raw_data_for_upsert
 
 
 models:
-  - name: orders_raw_data_for_upsert2
+
+  - name: orders_raw_data_for_upsert
 
     # required
     config:
