@@ -121,7 +121,7 @@
 {% endmacro %}
 
 {% macro get_add_constraints(row_constraints) %}
-  {{ return(create_constraints(row_constraints)) }}
+  {{ return(add_constraints(row_constraints)) }}
 {% endmacro %}
 
 {% macro add_constraints(row_constraints) %}
@@ -135,13 +135,10 @@
 {% endmacro %}
 
 {% macro validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)  %}
-
   {% if (model_constraints or column_constraints) and incremental_strategy  and  incremental_strategy != 'copy' %}
-    {{ exceptions.raise_compiler_error("Constraints not avalible for incremental strategy " ~ incremental_strategy) }}
+    {{ exceptions.raise_compiler_error("Constraints not available for incremental strategy " ~ incremental_strategy) }}
   {% endif %}
-
   {% if (model_constraints or column_constraints)  and  target_type  != 'datalake' %}
-    {{ exceptions.raise_compiler_error("Constraints not avalible for target " ~ incremental_strategy) }}
+    {{ exceptions.raise_compiler_error("Constraints not available for target " ~ incremental_strategy) }}
   {% endif %}
-
 {% endmacro %}

@@ -33,7 +33,6 @@
   {{ log("model['columns']): " ~ model['columns'] ) }}
   {{ log("model['constraints']: " ~ model['constraints'] ) }}
 
-
   {% if target_type  == 'datalake' %}
     {%- set target_connection = adapter.get(model_config, 'target_connection', database) -%}
     {%- set target_schema = adapter.get(model_config, 'target_schema', schema) -%}

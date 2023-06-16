@@ -22,22 +22,22 @@ models:
     # model-level constraints
     constraints:
       - type: check
-        columns: ['order_date', 'event_date']
-        expression: "order_date <= event_date"
-        name: valid_order_date_from_event_date
+        columns: ['nettotal', 'taxrate']
+        expression: "taxrate <= nettotal"
+        name: valid_taxrate_from_nettotal
 
     columns:
-      - name: order_id
+      - name: orderid
         data_type: string
 
         # column-level constraints
         constraints:
           - type: not_null
           - type: check
-            expression: "REGEXP_LIKE(order_id, '^[0-9]{4}[a-z]{5}$')"
+            expression: "REGEXP_LIKE(orderid, '^[0-9]{4}[a-z]{5}$')"
             name: order_id_match_pattern
 
-      - name: event_date
-        data_type: string
-      - name: order_date
-        data_type: string
+      - name: nettotal
+        data_type: double
+      - name: taxrate
+        data_type: double
