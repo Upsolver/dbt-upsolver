@@ -54,11 +54,7 @@
     {%- call statement('main') -%}
       {{ get_alter_job_sql(job_identifier, options, incremental_strategy, source) }}
     {%- endcall %}
-    {%- for rendered_constraint in (column_constraints + model_constraints) %}
-      {%- call statement('add_job_constraint') -%}
-        {{ get_add_job_constraint_sql(job_identifier, rendered_constraint) }}
-      {%- endcall %}
-    {% endfor %}
+    {{ get_add_expectations_if_not_exists_sql(job_identifier, rendered_constraints = column_constraints + model_constraints) }}
   {%- else -%}
     {%- call statement('main') -%}
       {%- if incremental_strategy == 'merge' -%}

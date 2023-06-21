@@ -11,9 +11,3 @@
     {{ render_options(enriched_editable_options, 'alter') }}
 
 {%- endmacro %}
-
-
-{% macro get_add_job_constraint_sql(job_identifier, rendered_constraint) -%}
-  ALTER JOB {{job_identifier}}
-  ADD {{ rendered_constraint }}
-{%- endmacro %}

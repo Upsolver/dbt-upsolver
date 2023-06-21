@@ -17,6 +17,7 @@ import dbt
 
 logger = AdapterLogger("Upsolver")
 LIST_RELATION_MACRO_NAME = "list_relation_without_caching"
+EXPECTATION_DATA_MACRO_NAME = "expectation_data"
 
 
 class UpsolverAdapter(adapter_cls):
@@ -212,7 +213,7 @@ class UpsolverAdapter(adapter_cls):
     @available
     @classmethod
     def render_raw_columns_constraints(cls, raw_columns: Dict[str, Dict[str, Any]]) -> List:
-        rendered_column_constraints = []
+        rendered_constraints = []
 
         for v in raw_columns.values():
             column_name = v['name']
@@ -221,10 +222,10 @@ class UpsolverAdapter(adapter_cls):
                 render_func = cls.render_column_constraint
                 c = cls.process_parsed_constraint(constraint, column_name, cls.render_column_constraint)
                 if c is not None:
-                    rendered_column_constraint = c
-                rendered_column_constraints.append(rendered_column_constraint)
+                    rendered_constraint = c
+                rendered_constraints.append(rendered_constraint)
 
-        return rendered_column_constraints
+        return rendered_constraints
 
     @classmethod
     def render_model_constraint(cls, constraint: ModelLevelConstraint, column_name: str) -> Optional[str]:
@@ -233,24 +234,27 @@ class UpsolverAdapter(adapter_cls):
         except Exception:
             raise dbt.exceptions.ParsingError(f"Required properties is missing: constraints name")
         if constraint.type == ConstraintType.check and constraint.expression:
-            return f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
+            rendered_constraint = f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
+            return {'rendered_constraint': rendered_constraint, 'constraint_name': constraint.name}
         else:
             return None
 
     @classmethod
     def render_column_constraint(cls, constraint: ColumnLevelConstraint, column_name: str) -> Optional[str]:
         constraint_expression = constraint.expression or ""
-        rendered_column_constraint = None
+        rendered_constraint = None
         if constraint.type == ConstraintType.check and constraint_expression:
-            constraint_prefix = f"EXPECTATION {constraint.name}" if constraint.name else f"EXPECTATION check__{column_name}"
-            rendered_column_constraint = f"{constraint_prefix} EXPECT {constraint_expression} ON VIOLATION WARN"
+            constraint_name = constraint.name if constraint.name else f"check__{column_name}"
+            constraint_prefix = f"EXPECTATION {constraint_name}" if constraint.name else f"EXPECTATION check__{column_name}"
+            rendered_constraint = f"{constraint_prefix} EXPECT {constraint_expression} ON VIOLATION WARN"
         elif constraint.type == ConstraintType.not_null:
-            constraint_prefix = f"EXPECTATION {constraint.name}" if constraint.expression else f"EXPECTATION not_null__{column_name}"
-            rendered_column_constraint = f"{constraint_prefix} EXPECT {column_name} IS NOT NULL ON VIOLATION WARN"
+            constraint_name = constraint.name if constraint.name else f"not_null__{column_name}"
+            constraint_prefix = f"EXPECTATION {constraint_name}"
+            rendered_constraint = f"{constraint_prefix} EXPECT {column_name} IS NOT NULL ON VIOLATION WARN"
 
-        if rendered_column_constraint:
-            rendered_column_constraint = rendered_column_constraint.strip()
-        return rendered_column_constraint
+        if rendered_constraint:
+            rendered_constraint = rendered_constraint.strip()
+        return {'rendered_constraint': rendered_constraint, 'constraint_name': constraint_name}
 
     @classmethod
     def render_raw_model_constraint(cls, raw_constraint: Dict[str, Any]) -> Optional[str]:
@@ -279,3 +283,12 @@ class UpsolverAdapter(adapter_cls):
             return render_func(parsed_constraint, column_name)
 
         return None
+
+    @available
+    def is_expectation_exists(self, job_name, expectation_name):
+        kwargs = {"job_name": job_name, "expectation_name": expectation_name}
+        result = self.execute_macro(EXPECTATION_DATA_MACRO_NAME, kwargs=kwargs)
+        if result['data']:
+            return True
+        else:
+            return False
