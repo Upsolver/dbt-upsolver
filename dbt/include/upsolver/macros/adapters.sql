@@ -126,7 +126,7 @@
 
 {% macro add_constraints(row_constraints) %}
     {% for c in row_constraints -%}
-      WITH {{ c }}
+      WITH {{ c['rendered_constraint'] }}
     {% endfor %}
 {% endmacro %}
 
