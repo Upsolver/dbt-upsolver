@@ -5,6 +5,7 @@ from dbt.adapters.upsolver.relation import UpsolverRelation
 from typing import List, Optional, Dict, Any, Set, Union
 from dbt.adapters.base.meta import available
 from dbt.adapters.base.impl import ConstraintSupport
+from dbt.events.functions import warn_or_error
 from dbt.contracts.graph.nodes import ColumnLevelConstraint, ConstraintType, ModelLevelConstraint
 from dbt.adapters.upsolver.options.copy_options import Copy_options
 from dbt.adapters.upsolver.options.connection_options import Connection_options
@@ -14,6 +15,8 @@ import agate
 import datetime
 import re
 import dbt
+
+from dbt.events.types import ConstraintNotSupported, ConstraintNotEnforced
 
 logger = AdapterLogger("Upsolver")
 LIST_RELATION_MACRO_NAME = "list_relation_without_caching"
