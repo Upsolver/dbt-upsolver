@@ -138,7 +138,7 @@
   {% if (model_constraints or column_constraints) and incremental_strategy  and  incremental_strategy != 'copy' %}
     {{ exceptions.raise_compiler_error("Constraints not available for incremental strategy " ~ incremental_strategy) }}
   {% endif %}
-  {% if (model_constraints or column_constraints)  and  target_type  != 'datalake' %}
-    {{ exceptions.raise_compiler_error("Constraints not available for target " ~ incremental_strategy) }}
+  {% if (model_constraints or column_constraints)  and  target_type  not in ['datalake', 'snowflake']  %}
+    {{ exceptions.raise_compiler_error("Constraints not available for target " ~ target_type) }}
   {% endif %}
 {% endmacro %}
