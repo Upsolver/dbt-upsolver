@@ -232,19 +232,17 @@ class UpsolverAdapter(adapter_cls):
 
     @classmethod
     def render_model_constraint(cls, constraint: ModelLevelConstraint, column_name: str) -> Optional[str]:
-        try:
-            constraint_prefix = f"EXPECTATION {constraint.name}"
-            rendered_constraints = []
-        except Exception:
-            raise dbt.exceptions.ParsingError(f"Required properties is missing: constraints name")
+        rendered_constraints = []
         if constraint.type == ConstraintType.check and constraint.expression:
+            constraint_name = constraint.name if constraint.name else f"check__{'_'.join(constraint.columns)}"
+            constraint_prefix = f"EXPECTATION {constraint_name}"
             rendered_constraint = f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
-            rendered_constraint = {'rendered_constraint': rendered_constraint, 'constraint_name': constraint.name}
+            rendered_constraint = {'rendered_constraint': rendered_constraint, 'constraint_name': constraint_name}
             rendered_constraints.append(rendered_constraint)
             return rendered_constraints
         if constraint.type == ConstraintType.not_null:
             for column in constraint.columns:
-                constraint_name = f"{constraint.name}__{column}"
+                constraint_name = constraint.name if constraint.name else f"not_null__{column}"
                 rendered_constraint = f"EXPECTATION {constraint_name} EXPECT {column} IS NOT NULL ON VIOLATION WARN"
                 rendered_constraint = {'rendered_constraint': rendered_constraint, 'constraint_name': constraint_name}
                 rendered_constraints.append(rendered_constraint)
