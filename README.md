@@ -117,8 +117,8 @@ dbt run --select <model name>
 
 | COMMAND | STATE |
 | ------ | ------ |
-| docs| not supported |
-| source | not supported |
+| docs| supported |
+| source | supported |
 | init | supported |
 | clean | supported |
 | debug | supported |
@@ -135,14 +135,20 @@ dbt run --select <model name>
 | run-operation | supported |
 
 ### Supported Upsolver SQLake functionality:
-| COMMAND | STATE | MATERIALIZED |
-| ------ | ------ | ------ |
-| SQL compute cluster| not supported | - |
-| SQL connections| supported | connection |
-| SQL copy job | supported | incremental |
-| SQL merge job | supported | incremental |
-| SQL insert job | supported | incremental |
-| SQL materialized views | supported | materializedview |
+| FUNCTION | STATE | MATERIALIZED | CONFIGURATION PROPERTIES
+| ------ | ------ | ------ | ------ |
+| Create compute cluster| not supported | - | - |
+| [Create connection](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections/create-connection) | supported | connection | connection_type(S3/Kafka/Snowflake ...), [connection_options](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections/create-connection#connection-options) |
+| [Create copy job](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from) | supported | incremental, incremental_strategy: 'copy' | source(S3/Kafka/Snowflake ...) , target_type(Datalake/Snowflake), [options](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from#job-options) |
+| [Create merge job](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge) | supported | incremental, incremental_strategy: 'merge'| target_type(S3/Datalake/Snowflake ...), target_connection, target_table_alias, target_schema, [options](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge#job-options) |
+| [Create insert job](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert) | supported | incremental, incremental_strategy: 'insert'| target_type(S3/Datalake/Snowflake ...), target_connection, target_table_alias, target_schema, [options](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert#job-options) |
+| [Create materialized views](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/sql-materialized-views) | supported | materializedview |
+| [Expectations](https://docs.upsolver.com/sqlake/how-to-guides/managing-data-quality-ingesting-data-with-expectations) | supported | incremental, incremental_strategy: 'copy' | model constraints and column constraints [in the yml file](https://docs.getdbt.com/reference/resource-properties/constraints) |
+| [MAP_COLUMNS_BY_NAME](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert/map_columns_by_name) | supported | incremental, incremental_strategy: ‘insert’ | map_columns_by_name(True/False) |
+| [Upsert with INSERT](https://docs.upsolver.com/sqlake/quickstarts/upsert-data-to-your-target-table#upsert-with-insert) | supported | incremental, incremental_strategy: ‘insert’ | primary_key|
+| [Upsert with MERGE](https://docs.upsolver.com/sqlake/quickstarts/upsert-data-to-your-target-table#upsert-with-insert)| supported | incremental, incremental_strategy: ‘merge’ | primary_key |
+| [PARTITIONED BY](https://docs.upsolver.com/sqlake/sql-command-reference/sql-tables/create-table#partition-clause) | supported | incremental | partition_by |
+
 
 ## SQL connections
 Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQL connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)

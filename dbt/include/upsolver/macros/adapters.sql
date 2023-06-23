@@ -119,3 +119,26 @@
   {% endcall %}
   {{ return(load_result('list_relation_without_caching').table) }}
 {% endmacro %}
+
+{% macro get_add_constraints(row_constraints) %}
+  {{ return(add_constraints(row_constraints)) }}
+{% endmacro %}
+
+{% macro add_constraints(row_constraints) %}
+    {% for c in row_constraints -%}
+      WITH {{ c['rendered_constraint'] }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro get_validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)  %}
+  {{ return(validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)) }}
+{% endmacro %}
+
+{% macro validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type)  %}
+  {% if (model_constraints or column_constraints) and incremental_strategy  and  incremental_strategy != 'copy' %}
+    {{ exceptions.raise_compiler_error("Constraints not available for incremental strategy " ~ incremental_strategy) }}
+  {% endif %}
+  {% if (model_constraints or column_constraints)  and  target_type  not in ['datalake', 'snowflake']  %}
+    {{ exceptions.raise_compiler_error("Constraints not available for target " ~ target_type) }}
+  {% endif %}
+{% endmacro %}

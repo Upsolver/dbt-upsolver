@@ -1,4 +1,10 @@
-{% macro get_create_copy_job_sql(job_identifier, sql, into_relation, sync, options, source, target_type) -%}
+{% macro get_create_copy_job_sql(job_identifier,
+                                 sql,
+                                 into_relation,
+                                 sync, options,
+                                 source, target_type,
+                                 raw_constraints,
+                                 raw_columns) -%}
 
     {%- set connection_identifier = adapter.get_connection_from_sql(sql) -%}
     {%- set job_options, source_options = adapter.separate_options(options, source) -%}
@@ -20,5 +26,6 @@
     AS COPY FROM {{source}} {{connection_identifier}}
     {{ render_options(source_options, 'create') }}
     INTO {{target_type}} {{into_relation}}
+    {{ get_add_constraints(row_constraints=raw_columns+raw_constraints) }}
 
 {%- endmacro %}
