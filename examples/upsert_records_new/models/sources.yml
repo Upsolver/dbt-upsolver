@@ -25,6 +25,9 @@ models:
         columns: ['nettotal', 'taxrate']
         expression: "taxrate <= nettotal"
         name: valid_taxrate_from_nettotal
+      - type: not_null
+        columns: ['nettotal', 'taxrate', orderid]
+        name: not_null_model
 
     columns:
       - name: orderid

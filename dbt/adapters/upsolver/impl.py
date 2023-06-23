@@ -234,11 +234,21 @@ class UpsolverAdapter(adapter_cls):
     def render_model_constraint(cls, constraint: ModelLevelConstraint, column_name: str) -> Optional[str]:
         try:
             constraint_prefix = f"EXPECTATION {constraint.name}"
+            rendered_constraints = []
         except Exception:
             raise dbt.exceptions.ParsingError(f"Required properties is missing: constraints name")
         if constraint.type == ConstraintType.check and constraint.expression:
             rendered_constraint = f"{constraint_prefix} EXPECT {constraint.expression} ON VIOLATION WARN"
-            return {'rendered_constraint': rendered_constraint, 'constraint_name': constraint.name}
+            rendered_constraint = {'rendered_constraint': rendered_constraint, 'constraint_name': constraint.name}
+            rendered_constraints.append(rendered_constraint)
+            return rendered_constraints
+        if constraint.type == ConstraintType.not_null:
+            for column in constraint.columns:
+                constraint_name = f"{constraint.name}__{column}"
+                rendered_constraint = f"EXPECTATION {constraint_name} EXPECT {column} IS NOT NULL ON VIOLATION WARN"
+                rendered_constraint = {'rendered_constraint': rendered_constraint, 'constraint_name': constraint_name}
+                rendered_constraints.append(rendered_constraint)
+            return rendered_constraints
         else:
             return None
 
@@ -263,6 +273,12 @@ class UpsolverAdapter(adapter_cls):
     def render_raw_model_constraint(cls, raw_constraint: Dict[str, Any]) -> Optional[str]:
         constraint = cls._parse_model_constraint(raw_constraint)
         return cls.process_parsed_constraint(constraint, '', cls.render_model_constraint)
+
+    @available
+    @classmethod
+    def render_raw_model_constraints(cls, raw_constraints: List[Dict[str, Any]]) -> List[str]:
+        model_constraints = [c for c in map(cls.render_raw_model_constraint, raw_constraints) if c is not None]
+        return [item for sublist in model_constraints for item in sublist]
 
     @classmethod
     def process_parsed_constraint(
