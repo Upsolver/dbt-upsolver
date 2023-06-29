@@ -142,3 +142,18 @@
     {{ exceptions.raise_compiler_error("Constraints not available for target " ~ target_type) }}
   {% endif %}
 {% endmacro %}
+
+{% macro upsolver__generate_schema_name(custom_schema_name, node) -%}
+
+    {%- set default_schema = target.schema -%}
+    {%- if custom_schema_name is none -%}
+
+        {{ default_schema }}
+
+    {%- else -%}
+
+        {{ custom_schema_name | trim }}
+
+    {%- endif -%}
+
+{%- endmacro %}
