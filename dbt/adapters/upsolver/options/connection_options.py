@@ -10,7 +10,7 @@ Connection_options = {
                     If omitted, the role created when integrating Upsolver with the AWS account is used."""
         },
         "aws_access_key_id": {"type": "text", "editable": True, "optional": True,
-                    "description":""" The AWS access key ID. Used in conjunction with AWS_SECRET_ACCESS_KEY.
+                    "description":"""The AWS access key ID. Used in conjunction with AWS_SECRET_ACCESS_KEY.
                     If omitted, the role created when integrating Upsolver with the AWS account is used."""
         },
         "aws_secret_access_key_id": {"type": "text", "editable": True, "optional": True,
@@ -18,12 +18,12 @@ Connection_options = {
                     If omitted, the role created when integrating Upsolver with the AWS account is used."""
         },
         "path_display_filter": {"type": "text", "editable": True, "optional": True,
-                    "description":""" A single path to show. If not provided, all buckets are shown.
+                    "description":"""A single path to show. If not provided, all buckets are shown.
                     Paths should be provided in the following format: s3://bucket/prefix. This shows anything beginning with the given prefix.
                     To filter by a specific folder, use the following format: s3://bucket/folder-path/"""
         },
         "path_display_filters": {"type": "list", "editable": True, "optional": True,
-                    "description":""" The list of paths to show. If not provided, all buckets are shown.
+                    "description":"""The list of paths to show. If not provided, all buckets are shown.
                     Paths should be provided in the following format: s3://bucket/prefix. This shows anything beginning with the given prefix.
                     To filter by a specific folder, use the following format: s3://bucket/folder-path/"""
         },
@@ -164,7 +164,7 @@ Connection_options = {
                     Example: snowflakedemo.us-east-2.aws.snowflakecomputing.com
                     DB_NAME The name of the database to connect to.
                     WAREHOUSE_NAME (Optional) The warehouse name. If not provided, the default warehouse is used. If no default warehouse exists, the CREATE CONNECTION command fails.
-                    ROLE_NAME (Optional) The name of the role to use when connecting. If not provided, the default role is used. If no default role exists, the CREATE CONNECTION command fails. 
+                    ROLE_NAME (Optional) The name of the role to use when connecting. If not provided, the default role is used. If no default role exists, the CREATE CONNECTION command fails.
                     Read more about connection string arguments in Snowflake."""
         },
         "user_name": {"type": "text", "editable": True, "optional": False,
@@ -225,7 +225,7 @@ Connection_options = {
                     "description":"""The password for the user."""
         },
         "comment": {"type": "text", "editable": True, "optional": True,
-                    "description":""" A description or comment regarding this connection."""
+                    "description":"""A description or comment regarding this connection."""
         }
     },
     "postgres": {
