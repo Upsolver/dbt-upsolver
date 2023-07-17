@@ -17,8 +17,8 @@ description: "Upsolver Configurations - Read this in-depth guide to learn about 
 
 ## Configs materialization
 
-| Config | Required? | Materialization | Description | Example |
-| ------ | --------- | --------------- | ----------- |
+| Config | Required | Materialization | Description | Example |
+| ------ | --------- | --------------- | ----------- | ------- |
 | connection_type | Yes | connection | Connection identifier: S3/GLUE_CATALOG/KINESIS | connection_type='S3' |
 | connection_options | Yes | connection | Dictionary of options supported by selected connection |           connection_options={ 'aws_role': 'aws_role', 'external_id': 'SAMPLES', 'read_only': True } |
 | incremental_strategy | No | incremental | Define one of incremental strategies: merge/copy/insert. Default: copy | incremental_strategy='merge' |
