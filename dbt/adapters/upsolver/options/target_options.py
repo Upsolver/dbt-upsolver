@@ -47,7 +47,7 @@ Target_options = {
             Note that you need at least one date partition column for this to work.
             Type: list of (<column_name>, <integer> DAYS) pairs"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "description":"""A description or comment regarding this table."""}
+            "description":"""A description or comment regarding this table"""}
   },
     "materialized_view": {
         "storage_connection": {"type": "identifier", "editable": False, "optional": True,
