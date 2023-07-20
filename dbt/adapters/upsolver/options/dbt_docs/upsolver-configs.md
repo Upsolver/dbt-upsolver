@@ -5,6 +5,7 @@ description: "Upsolver Configurations - Read this in-depth guide to learn about 
 ---
 
 ## Supported Upsolver SQLake functionality:
+
 | COMMAND | STATE | MATERIALIZED |
 | ------ | ------ | ------ |
 | SQL compute cluster| not supported | - |
@@ -35,25 +36,20 @@ description: "Upsolver Configurations - Read this in-depth guide to learn about 
 | options | No | incremental/materializedview | Dictionary of job options | options={ 'START_FROM': 'BEGINNING', 'ADD_MISSING_COLUMNS': True } |
 
 
-
-## Connection options
-
-
-
-
-
-## SQL connections
+## SQL connection options
 
 Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQL connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
 As a dbt model connection is a model with materialized='connection'
+
 ```sql
 {{ config(
         materialized='connection',
         connection_type={ 'S3' | 'GLUE_CATALOG' | 'KINESIS' | 'KAFKA'| 'SNOWFLAKE' },
         connection_options={}
-    	)
+        )
 }}
 ```
+
 Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists) SQL and send it to Upsolver engine. Name of the connection will be name of the model.
 
 
@@ -82,6 +78,7 @@ Running this model will  compile CREATE TABLE SQL(or ALTER TABLE if exists) and 
 An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
 
 As a dbt model insert job is model with materialized='incremental' and incremental_strategy='insert'
+
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -99,6 +96,7 @@ WHERE ...
 GROUP BY ...
 HAVING COUNT(DISTINCT orderid::string) ...
 ```
+
 Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE INSERT JOB(or ALTER INSERT JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 
@@ -107,6 +105,7 @@ Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and C
 A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
 
 As a dbt model merge job is model with materialized='incremental' and incremental_strategy='merge'
+
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -124,8 +123,8 @@ WHERE ...
 GROUP BY ...
 HAVING COUNT ...
 ```
-Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL materialized views
 
@@ -133,6 +132,7 @@ When transforming your data, you may find that you need data from multiple sourc
 In such a case, you can create a materialized view from one SQLake table in order to join it with your other table (which in this case is considered the main table). More details on ["Upsolver SQL materialized views"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/sql-materialized-views).
 
 As a dbt model materialized views  is model with materialized='materializedview'.
+
 ```sql
 {{ config(  materialized='materializedview',
             sync=True|False,
@@ -144,13 +144,12 @@ FROM {{ ref(<model>) }}
 WHERE ...
 GROUP BY ...
 ```
-Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
+Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
 ## Projects examples
 
 > projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
-
 
 ## Connection options
 
@@ -218,7 +217,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | password | elasticsearch | text | True | False | The password for the user. |
 | comment | elasticsearch | text | True | True | A description or comment regarding this connection. |
 
-
 ## Target options
 
 | Option | Storage    | Type | Editable | Optional | Description |
@@ -243,7 +241,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | exclude_columns | snowflake | list | False | True | The EXCLUDE_COLUMNS option tells Upsolver to ignore data in the columns specified in this list, and the column is not created on the target. To exclude columns, provide a single column or a list of column names, or use a glob pattern. When you simply don't need columns, you want to save storage space, or maintain a clean data structure, use EXCLUDE_COLUMNS and the specified columns will be ignored. This option gives you control over the width of the target table by enabling you to manage how many columns are created. If your target system has a limit on the number of columns it supports, continuously adding columns can cause issues. Furthermore, columns containing sensitive information can be excluded, ensuring private data is not copied downstream to a staging table in your data lake, or directly into your target. Values: ( <column>, ...) |
 | create_table_if_missing | snowflake | boolean | False | True |  |
 | write_interval | snowflake | integer | False | True |  |
-
 
 ## Transformation options
 
@@ -303,7 +300,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | skip_failed_files | redshift | boolean | False | True | When true, the job will skip any files in which the job is unsuccessful and continue with the rest of the files. Default: true |
 | fail_on_write_error | redshift | boolean | False | True | When true, the job will fail when an on-write error occurs. Default: false |
 | comment | redshift | text | True | True | A description or comment regarding this job. |
-
 
 ## Copy options
 
