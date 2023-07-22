@@ -46,7 +46,6 @@ pip is the easiest way to install the adapter:
 
 <p>For further info, refer to the GitHub repository: <a href={`https://github.com/${frontMatter.meta.github_repo}`}>{frontMatter.meta.github_repo}</a></p>
 
-
 ## Authentication Methods
 
 ### User / Token authentication
@@ -54,7 +53,6 @@ pip is the easiest way to install the adapter:
 Upsolver can be configured using basic user/token authentication as shown below.
 
 <File name='~/.dbt/profiles.yml'>
-
 
 ```yaml
 my-upsolver-db:
@@ -74,7 +72,6 @@ my-upsolver-db:
   ```
 
 </File>
-
 
 ## Configurations
 

@@ -5,6 +5,7 @@ description: "Upsolver Configurations - Read this in-depth guide to learn about 
 ---
 
 ## Supported Upsolver SQLake functionality:
+
 | COMMAND | STATE | MATERIALIZED |
 | ------ | ------ | ------ |
 | SQL compute cluster| not supported | - |
@@ -34,26 +35,20 @@ description: "Upsolver Configurations - Read this in-depth guide to learn about 
 | sync | No | incremental/materializedview | Boolean option to define if job is synchronized or non-msynchronized. Default: False | sync=True |
 | options | No | incremental/materializedview | Dictionary of job options | options={ 'START_FROM': 'BEGINNING', 'ADD_MISSING_COLUMNS': True } |
 
-
-
-## Connection options
-
-
-
-
-
-## SQL connections
+## SQL connection options
 
 Connections are used to provide Upsolver with the proper credentials to bring your data into SQLake as well as to write out your transformed data to various services. More details on ["Upsolver SQL connections"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-connections)
 As a dbt model connection is a model with materialized='connection'
+
 ```sql
 {{ config(
         materialized='connection',
         connection_type={ 'S3' | 'GLUE_CATALOG' | 'KINESIS' | 'KAFKA'| 'SNOWFLAKE' },
         connection_options={}
-    	)
+        )
 }}
 ```
+
 Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists) SQL and send it to Upsolver engine. Name of the connection will be name of the model.
 
 
@@ -82,6 +77,7 @@ Running this model will  compile CREATE TABLE SQL(or ALTER TABLE if exists) and 
 An INSERT job defines a query that pulls in a set of data based on the given SELECT statement and inserts it into the designated target. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL insert"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/insert).
 
 As a dbt model insert job is model with materialized='incremental' and incremental_strategy='insert'
+
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -99,6 +95,7 @@ WHERE ...
 GROUP BY ...
 HAVING COUNT(DISTINCT orderid::string) ...
 ```
+
 Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE INSERT JOB(or ALTER INSERT JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 
@@ -107,6 +104,7 @@ Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and C
 A MERGE job defines a query that pulls in a set of data based on the given SELECT statement and inserts into, replaces, or deletes the data from the designated target based on the job definition. This query is then run periodically based on the RUN_INTERVAL defined within the job. More details on ["Upsolver SQL merge"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/merge).
 
 As a dbt model merge job is model with materialized='incremental' and incremental_strategy='merge'
+
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
@@ -124,8 +122,8 @@ WHERE ...
 GROUP BY ...
 HAVING COUNT ...
 ```
-Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
+Running this model will compile CREATE TABLE SQL(or ALTER TABLE if exists) and CREATE MERGE JOB(or ALTER MERGE JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL materialized views
 
@@ -133,6 +131,7 @@ When transforming your data, you may find that you need data from multiple sourc
 In such a case, you can create a materialized view from one SQLake table in order to join it with your other table (which in this case is considered the main table). More details on ["Upsolver SQL materialized views"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/sql-transformation-jobs/sql-materialized-views).
 
 As a dbt model materialized views  is model with materialized='materializedview'.
+
 ```sql
 {{ config(  materialized='materializedview',
             sync=True|False,
@@ -144,14 +143,12 @@ FROM {{ ref(<model>) }}
 WHERE ...
 GROUP BY ...
 ```
-Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
+Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZED VIEW if exists) and send it to Upsolver engine. Name of the materializedview  will be name of the model.
 
 ## Projects examples
 
 > projects examples link: [github.com/dbt-upsolver/examples/](https://github.com/Upsolver/dbt-upsolver/tree/main/examples)
-
-
 
 ## Connection options
 
@@ -219,7 +216,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | password | elasticsearch | text | True | False | 'password': '<password>' |
 | comment | elasticsearch | text | True | True | 'comment': '<comment>' |
 
-
 ## Target options
 
 | Option | Storage    | Type | Editable | Optional | Config Syntax |
@@ -244,7 +240,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | exclude_columns | snowflake | list | False | True | 'exclude_columns': ('<exclude_column>', ...) |
 | create_table_if_missing | snowflake | boolean | False | True | 'create_table_if_missing': True/False} |
 | run_interval | snowflake | integer | False | True | 'run_interval': '<N MINUTES/HOURS/DAYS>' |
-
 
 ## Transformation options
 
@@ -304,7 +299,6 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 | skip_failed_files | redshift | boolean | False | True | 'skip_failed_files': True/False |
 | fail_on_write_error | redshift | boolean | False | True | 'fail_on_write_error': True/False |
 | comment | redshift | text | True | True | 'comment': '<comment>' |
-
 
 ## Copy options
 
