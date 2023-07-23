@@ -256,3 +256,5 @@ Running this model will compile CREATE MATERIALIZED VIEW SQL(or ALTER MATERIALIZ
 [Upsolver sqlake documentation](https://docs.upsolver.com/sqlake/)
 
 [DBT documentation](https://docs.getdbt.com/docs/introduction)
+
+[Upsolver Comunity Slack](https://join.slack.com/t/upsolvercommunity/shared_invite/zt-1zo1dbyys-hj28WfaZvMh4Z4Id3OkkhA)
