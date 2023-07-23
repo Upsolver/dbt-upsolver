@@ -1,0 +1,46 @@
+version: 2
+
+sources:
+  - name: upsert_records_new
+    database: default_glue_catalog
+    schema: database_16e61b
+    tables:
+      - name: insert_orders_upsert
+      - name: merge_orders_upsert
+      - name: orders_raw_data_for_upsert
+
+
+models:
+
+  - name: orders_raw_data_for_upsert
+
+    # required
+    config:
+      contract:
+        enforced: true
+
+    # model-level constraints
+    constraints:
+      - type: check
+        columns: ['nettotal', 'taxrate']
+        expression: "taxrate <= nettotal"
+        name: valid_taxrate_from_nettotal
+      - type: not_null
+        columns: ['nettotal', 'taxrate', orderid]
+        name: not_null_model
+
+    columns:
+      - name: orderid
+        data_type: string
+
+        # column-level constraints
+        constraints:
+          - type: not_null
+          - type: check
+            expression: "REGEXP_LIKE(orderid, '^[0-9]{4}[a-z]{5}$')"
+            name: order_id_match_pattern
+
+      - name: nettotal
+        data_type: double
+      - name: taxrate
+        data_type: double

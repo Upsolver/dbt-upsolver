@@ -13,6 +13,10 @@
   {%- set primary_key = adapter.get(model_config, 'primary_key', []) -%}
   {%- set map_columns_by_name = adapter.get(model_config, 'map_columns_by_name', False) -%}
   {%- set job_identifier = identifier + '_job' %}
+  {%- set model_constraints = adapter.render_raw_model_constraints(raw_constraints=model['constraints']) -%}
+  {%- set column_constraints = adapter.render_raw_columns_constraints(raw_columns=model['columns']) -%}
+
+  {{ get_validate_constraints(model_constraints, column_constraints, incremental_strategy, target_type) }}
 
   {%- set old_relation = adapter.get_relation(identifier=job_identifier,
                                               schema=schema,
@@ -26,7 +30,8 @@
   {{ run_hooks(pre_hooks, inside_transaction=False) }}
   {{ run_hooks(pre_hooks, inside_transaction=True) }}
   {{ log("model[config]: " ~ model['config'] ) }}
-
+  {{ log("model['columns']): " ~ model['columns'] ) }}
+  {{ log("model['constraints']: " ~ model['constraints'] ) }}
 
   {% if target_type  == 'datalake' %}
     {%- set target_connection = adapter.get(model_config, 'target_connection', database) -%}
@@ -49,6 +54,7 @@
     {%- call statement('main') -%}
       {{ get_alter_job_sql(job_identifier, options, incremental_strategy, source) }}
     {%- endcall %}
+    {{ get_add_expectations_if_not_exists_sql(job_identifier, rendered_constraints = column_constraints + model_constraints) }}
   {%- else -%}
     {%- call statement('main') -%}
       {%- if incremental_strategy == 'merge' -%}
@@ -63,7 +69,7 @@
       {%- else  -%}
         {{ get_create_copy_job_sql(job_identifier, sql,
                                    into_relation, sync, options, source,
-                                   target_type) }}
+                                   target_type, model_constraints, column_constraints) }}
 
       {%- endif -%}
     {%- endcall -%}
