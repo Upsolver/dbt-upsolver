@@ -1,6 +1,6 @@
 Transformation_options = {
   "s3": {
-        "run_interval": {"type": "ineger", "editable": False, "optional": True,
+        "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
@@ -84,7 +84,7 @@ Transformation_options = {
             Usually, it's recommended to include padding to ensure alphabetical sorting of the output files."""}
   },
   "elasticsearch": {
-        "run_interval": {"type": "identifier", "editable": False, "optional": True,
+        "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
@@ -145,13 +145,13 @@ Transformation_options = {
             "description":"""A description or comment regarding this job."""}
   },
   "snowflake": {
-        "custom_insert_expressions": {"type": "dict", "editable": True, "optional": True,
+        "custom_insert_expressions": {"type": "dict_str", "editable": True, "optional": True,
             "syntax":"'custom_insert_expressions': {'INSERT_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': '<value>'}",
             "description":""" Configure a list of custom expression transformations to apply to the value of each column when inserting unmatched (new) rows. Note this is only used in Merge Jobs.
             Note: You can use {} as a placeholder for the mapped value from the select statement.
             Type: array[(column, expression)]
             Default: ()"""},
-        "custom_update_expressions": {"type": "dict", "editable": True, "optional": True,
+        "custom_update_expressions": {"type": "dict_str", "editable": True, "optional": True,
             "syntax":"'custom_update_expressions': {'UPDATE_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': '<value>'}",
             "description":"""Configure a list of custom expression transformations to apply to the value of each column when updating matched rows. Note this is only used in Merge Jobs.
             Note: You can use {} as a placeholder for the mapped value from the select statement.
@@ -166,7 +166,7 @@ Transformation_options = {
             "description":"""When true, columns that don't exist in the target table are added automatically when encountered.
             When false, you cannot do SELECT * within the SELECT statement of your transformation job.
             Default: false"""},
-        "run_interval": {"type": "identifier", "editable": False, "optional": True,
+        "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
@@ -223,7 +223,7 @@ Transformation_options = {
             "description":""" When true, columns that don't exist in the target table are added automatically when encountered.
             When false, you cannot do SELECT * within the SELECT statement of your transformation job.
             Default: false"""},
-        "run_interval": {"type": "identifier", "editable": False, "optional": True,
+        "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
@@ -275,7 +275,7 @@ Transformation_options = {
             "description":"""A description or comment regarding this job."""}
     },
     "redshift": {
-        "run_interval": {"type": "identifier", "editable": False, "optional": True,
+        "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.

@@ -94,6 +94,19 @@ class UpsolverAdapter(adapter_cls):
         except Exception:
             raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
 
+    def render_option_from_dict_str(self, option_value):
+        try:
+            res = []
+            for key, value in option_value.items():
+                item = [f'{key}=']
+                item.append("'")
+                item.append(value)
+                item.append("'")
+                res.append(''.join(item))
+            return f"({' ,'.join(res)})"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
+
     def render_option_from_list(self, option_value):
         try:
             if isinstance(option_value, list) and len(option_value) > 1:
@@ -105,6 +118,8 @@ class UpsolverAdapter(adapter_cls):
 
     @available
     def enrich_options(self, config_options, source, options_type):
+        print('ddddddoptions_typeddddddd', options_type)
+        print('source', source)
         options = self.get_options(source, options_type)
         enriched_options = {}
         for option, value in config_options.items():
@@ -114,6 +129,8 @@ class UpsolverAdapter(adapter_cls):
                     value = self.render_option_from_list(value)
                 elif options[option.lower()]['type'] == 'dict':
                     value = self.render_option_from_dict(value)
+                elif options[option.lower()]['type'] == 'dict_str':
+                    value = self.render_option_from_dict_str(value)
                 enriched_options[option] = find_value
                 enriched_options[option]['value'] = value
             else:
