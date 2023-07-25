@@ -26,6 +26,11 @@ class UpsolverCredentials(Credentials):
     database: str
     schema: str
 
+    _ALIASES = {
+        "target_schema": "schema",
+        "target_connection": "database",
+    }
+
     @property
     def type(self):
         return "upsolver"

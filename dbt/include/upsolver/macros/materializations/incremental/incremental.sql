@@ -7,7 +7,6 @@
   {%- set options = adapter.get(model_config, 'options', {}) -%}
   {%- set source = adapter.get(model_config, 'source') -%}
   {%- set target_type = adapter.get(model_config, 'target_type', 'datalake').lower() -%}
-  {%- set target_table_alias = adapter.get(model_config, 'target_table_alias', identifier) -%}
   {%- set delete_condition = adapter.get(model_config, 'delete_condition', False) -%}
   {%- set partition_by = adapter.get(model_config, 'partition_by', []) -%}
   {%- set primary_key = adapter.get(model_config, 'primary_key', []) -%}
@@ -34,20 +33,16 @@
   {{ log("model['constraints']: " ~ model['constraints'] ) }}
 
   {% if target_type  == 'datalake' %}
-    {%- set target_connection = adapter.get(model_config, 'target_connection', database) -%}
-    {%- set target_schema = adapter.get(model_config, 'target_schema', schema) -%}
-    {%- set table_relation = api.Relation.create(identifier=target_table_alias,
-                                                 schema=target_schema,
-                                                 database=target_connection,
+    {%- set table_relation = api.Relation.create(identifier=identifier,
+                                                 schema=schema,
+                                                 database=database,
                                                  type='table') -%}
     {%- set into_relation = table_relation -%}
     {%- call statement('create_table_if_not_exists') -%}
       {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
     {%- endcall -%}
   {%- else -%}
-    {%- set target_schema = adapter.require(model_config, 'target_schema') -%}
-    {% set target_connection = adapter.require(model_config, 'target_connection') %}
-    {%- set into_relation = target_connection + '.' + target_schema + '.' + target_table_alias -%}
+    {%- set into_relation = database + '.' + schema + '.' + identifier -%}
   {%- endif %}
 
   {%- if old_relation -%}

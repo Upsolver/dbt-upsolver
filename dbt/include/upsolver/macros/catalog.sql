@@ -1,6 +1,4 @@
 {% macro upsolver__get_catalog(information_schema, schemas)-%}
-  {{ log("information_schema " ~ information_schema ) }}
-  {{ log("schemas " ~ schemas ) }}
 
   {%- if (schemas | length) == 0 -%}
    {% set msg -%}
@@ -35,7 +33,6 @@
     {% set columns = run_query(columns_query) %}
     {% do columns_list.append(columns) %}
   {% endfor %}
-
   {{ return(adapter.merge_tables(columns_list)) }}
 
 {% endmacro %}
