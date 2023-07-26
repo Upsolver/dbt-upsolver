@@ -6,11 +6,7 @@ Transformation_options = {
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 1 MINUTE
-            (Optional) How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
-            For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.
-            Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }"""},
+            Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
             "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
@@ -90,11 +86,7 @@ Transformation_options = {
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 1 MINUTE
-            (Optional) How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
-            For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.
-            Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }"""},
+            Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
             "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
@@ -172,11 +164,7 @@ Transformation_options = {
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 1 MINUTE
-            (Optional) How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
-            For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.
-            Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }"""},
+            Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
             "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
@@ -229,11 +217,7 @@ Transformation_options = {
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 1 MINUTE
-            (Optional) How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
-            For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.
-            Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }"""},
+            Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
             "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
@@ -281,11 +265,7 @@ Transformation_options = {
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 1 MINUTE
-            (Optional) How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
-            For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.
-            Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }"""},
+            Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
             "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
