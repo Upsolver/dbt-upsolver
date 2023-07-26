@@ -51,8 +51,8 @@ Target_options = {
             For example, if the current time is 2023-02-23 12:30:00 UTC, and you have defined TABLE_DATA_RETENTION = 2 days, you can expect data written during 2023-02-23, 2023-02-22, and 2023-02-21 to exist in the table. The retention threshold truncates data to the nearest day, so when the time changes to 2023-02-24 00:00:00 UTC, you can no longer expect data from 2023-02-21 to be present in the table, although it might be there for a while.
             Note that you need at least one date partition column for this option to work.
             Value: <integer> DAYS"""},
-        "column_data_retention": {"type": "dict", "editable": True, "optional": True,
-            "syntax":"'column_data_retention': {'COLUMN' : '<column>','DURATION': N DAYS}",
+        "column_data_retention": {"type": "list_dict", "editable": True, "optional": True,
+            "syntax":"'column_data_retention': ({'COLUMN' : '<column>','DURATION': '<N DAYS>'})",
             "description":"""When set, after the duration of a column elapses in a partition, the data is rewritten without the contents of that column. Number of days can range between 1 and 9999.
             Note that you need at least one date partition column for this to work.
             Type: list of (<column_name>, <integer> DAYS) pairs"""},

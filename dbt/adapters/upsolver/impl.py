@@ -88,8 +88,32 @@ class UpsolverAdapter(adapter_cls):
                     item.append(' ,'.join(value))
                     item.append(')')
                 else:
+                    item.append("'") if key.lower() == 'column' else False
                     item.append(value)
+                    item.append("'") if key.lower() == 'column' else False
                 res.append(''.join(item))
+            return f"({' ,'.join(res)})"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
+
+    def render_option_from_dict_str(self, option_value):
+        try:
+            res = []
+            for key, value in option_value.items():
+                item = [f'{key}=']
+                item.append("'")
+                item.append(value)
+                item.append("'")
+                res.append(''.join(item))
+            return f"({' ,'.join(res)})"
+        except Exception:
+            raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
+
+    def render_option_from_list_dict(self, option_value):
+        try:
+            res = []
+            for value in option_value:
+                res.append(self.render_option_from_dict(value))
             return f"({' ,'.join(res)})"
         except Exception:
             raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: dictionary")
@@ -114,6 +138,10 @@ class UpsolverAdapter(adapter_cls):
                     value = self.render_option_from_list(value)
                 elif options[option.lower()]['type'] == 'dict':
                     value = self.render_option_from_dict(value)
+                elif options[option.lower()]['type'] == 'dict_str':
+                    value = self.render_option_from_dict_str(value)
+                elif options[option.lower()]['type'] == 'list_dict':
+                    value = self.render_option_from_list_dict(value)
                 enriched_options[option] = find_value
                 enriched_options[option]['value'] = value
             else:
