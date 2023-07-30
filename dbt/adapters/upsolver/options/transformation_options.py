@@ -1,14 +1,14 @@
 Transformation_options = {
   "s3": {
         "run_interval": {"type": "integer", "editable": False, "optional": True,
-            "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -16,7 +16,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': '<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp>/NOW'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -24,13 +24,13 @@ Transformation_options = {
             Values: { NOW | timestamp }
             Default: Never"""},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
-            "syntax":"'compute_cluster': '<compute_cluster>'",
+            "syntax":"'compute_cluster': `'<compute_cluster>'`",
             "description":"""The compute cluster to run this job.
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "syntax":"'comment': '<comment>'",
+            "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""},
         "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
             "syntax":"'allow_cartesian_products': True/False",
@@ -56,16 +56,16 @@ Transformation_options = {
             Values: { NONE | GZIP | SNAPPY | ZSTD }
             Default: NONE"""},
         "date_pattern": {"type": "text", "editable": False, "optional": True,
-            "syntax":"'date_pattern': '<date_pattern>'",
+            "syntax":"'date_pattern': `'<date_pattern>'`",
             "description":"""Upsolver uses the date pattern to partition the output on the S3 bucket. Upsolver supports partitioning up to the minute, for example: 'yyyy/MM/dd/HH/mm'. For more options, see: Java SimpleDateFormat
             Default:  'yyyy/MM/dd/HH/mm'"""},
         "output_offset": {"type": "identifier", "editable": False, "optional": True,
-            "syntax":"'output_offset': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'output_offset': `'<N MINUTES/HOURS/DAYS>'`",
             "description":""" By default, the file 2023/01/01/00/01 contains data for 2023-01-01 00:00 - 2023-01-01 00:00.59.999. Setting OUTPUT_OFFSET to 1 MINUTE add to that so a value of the first minute will move the file name to 02, if you want to move it back you can use negative values.
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 0"""},
         "location": {"type": "text", "editable": False, "optional": False,
-            "syntax":"'location': '<location>'",
+            "syntax":"'location': `'<location>'`",
             "description":"""The target location to write files to, as a full S3 URI. The location URI pattern can include macros referring to data columns, this allows custom partitioning of the data in the target location.
             Supported macros:
             Time: {time:<date-pattern>}
@@ -81,14 +81,14 @@ Transformation_options = {
   },
   "elasticsearch": {
         "run_interval": {"type": "integer", "editable": False, "optional": True,
-            "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -96,7 +96,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': '<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp>/NOW'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -104,7 +104,7 @@ Transformation_options = {
             Values: { NOW | timestamp }
             Default: Never"""},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
-            "syntax":"'compute_cluster': '<compute_cluster>'",
+            "syntax":"'compute_cluster': `'<compute_cluster>'`",
             "description":"""The compute cluster to run this job.
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
@@ -133,18 +133,18 @@ Transformation_options = {
             Values: {  HOURLY | DAILY | MONTHLY | YEARLY }
             Default: DAILY"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "syntax":"'comment': '<comment>'",
+            "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""}
   },
   "snowflake": {
         "custom_insert_expressions": {"type": "dict_str", "editable": True, "optional": True,
-            "syntax":"'custom_insert_expressions': {'INSERT_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': '<value>'}",
+            "syntax":"'custom_insert_expressions': {'INSERT_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': `'<value>'`}",
             "description":""" Configure a list of custom expression transformations to apply to the value of each column when inserting unmatched (new) rows. Note this is only used in Merge Jobs.
             Note: You can use {} as a placeholder for the mapped value from the select statement.
             Type: array[(column, expression)]
             Default: ()"""},
         "custom_update_expressions": {"type": "dict_str", "editable": True, "optional": True,
-            "syntax":"'custom_update_expressions': {'UPDATE_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': '<value>'}",
+            "syntax":"'custom_update_expressions': {'UPDATE_TIME' : 'CURRENT_TIMESTAMP()','MY_VALUE': `'<value>'`}",
             "description":"""Configure a list of custom expression transformations to apply to the value of each column when updating matched rows. Note this is only used in Merge Jobs.
             Note: You can use {} as a placeholder for the mapped value from the select statement.
             Type: array[(column, expression)]
@@ -159,14 +159,14 @@ Transformation_options = {
             When false, you cannot do SELECT * within the SELECT statement of your transformation job.
             Default: false"""},
         "run_interval": {"type": "integer", "editable": False, "optional": True,
-            "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -174,7 +174,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': '<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp>/NOW'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -182,7 +182,7 @@ Transformation_options = {
             Values: { NOW | timestamp }
             Default: Never"""},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
-            "syntax":"'compute_cluster': '<compute_cluster>'",
+            "syntax":"'compute_cluster': `'<compute_cluster>'`",
             "description":"""The compute cluster to run this job.
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
@@ -202,7 +202,7 @@ Transformation_options = {
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "syntax":"'comment': '<comment>'",
+            "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""}
   },
     "datalake": {
@@ -212,14 +212,14 @@ Transformation_options = {
             When false, you cannot do SELECT * within the SELECT statement of your transformation job.
             Default: false"""},
         "run_interval": {"type": "integer", "editable": False, "optional": True,
-            "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -227,7 +227,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': '<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp>/NOW'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -235,7 +235,7 @@ Transformation_options = {
             Values: { NOW | timestamp }
             Default: Never"""},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
-            "syntax":"'compute_cluster': '<compute_cluster>'",
+            "syntax":"'compute_cluster': `'<compute_cluster>'`",
             "description":"""The compute cluster to run this job.
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
@@ -255,19 +255,19 @@ Transformation_options = {
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "syntax":"'comment': '<comment>'",
+            "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""}
     },
     "redshift": {
         "run_interval": {"type": "integer", "editable": False, "optional": True,
-            "syntax":"'run_interval': '<N MINUTES/HOURS/DAYS>'",
+            "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
             The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day.
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': '<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -275,7 +275,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': '<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp>/NOW'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -283,7 +283,7 @@ Transformation_options = {
             Values: { NOW | timestamp }
             Default: Never"""},
         "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
-            "syntax":"'compute_cluster': '<compute_cluster>'",
+            "syntax":"'compute_cluster': `'<compute_cluster>'`",
             "description":"""The compute cluster to run this job.
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
@@ -311,7 +311,7 @@ Transformation_options = {
             "description":"""When true, the job will fail when an on-write error occurs.
             Default: false"""},
         "comment": {"type": "text", "editable": True, "optional": True,
-            "syntax":"'comment': '<comment>'",
+            "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""}
     }
 }
