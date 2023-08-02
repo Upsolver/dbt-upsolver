@@ -266,7 +266,7 @@ Copy_options = {
                 Default: The sole cluster in your environment"""
             },
             "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-                "syntax":"'run_parallelism': <integer>",
+                "syntax":"'run_parallelism': `<integer>`",
                 "description":"""The number of parser jobs to run in parallel per minute.
                 Default: 1"""
             },

@@ -391,7 +391,7 @@ models:
 | end_at | s3 | job_options | True | True | 'end_at': `'<timestamp/NOW>'` |
 | start_from | s3 | job_options | False | True | 'start_from': `'<timestamp/NOW/BEGINNING>'` |
 | compute_cluster | s3 | job_options | True | True | 'compute_cluster': `'<compute_cluster>'` |
-| run_parallelism | s3 | job_options | True | True | 'run_parallelism': <integer> |
+| run_parallelism | s3 | job_options | True | True | 'run_parallelism': `<integer>` |
 | content_type | s3 | job_options | True | True | 'content_type': 'AUTO/CSV...' |
 | compression | s3 | job_options | False | True | 'compression': 'AUTO/GZIP...' |
 | comment | s3 | job_options | True | True | 'comment': `'<comment>'` |
