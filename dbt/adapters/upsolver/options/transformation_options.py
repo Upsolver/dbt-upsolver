@@ -8,7 +8,7 @@ Transformation_options = {
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -16,7 +16,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': `'<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp/NOW>'`",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -38,11 +38,11 @@ Transformation_options = {
             See: UNNEST
             Default: false"""},
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'aggregation_parallelism': <integer>",
+            "syntax":"'aggregation_parallelism': `<integer>`",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
             Default: 1"""},
         "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'run_parallelism': <integer>",
+            "syntax":"'run_parallelism': `<integer>`",
             "description":"""Controls how many jobs run in parallel to process a single minute of data from the source table.
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
@@ -88,7 +88,7 @@ Transformation_options = {
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -96,7 +96,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': `'<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp/NOW>'`",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -115,16 +115,16 @@ Transformation_options = {
             See: UNNEST
             Default: false"""},
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'aggregation_parallelism': <integer>",
+            "syntax":"'aggregation_parallelism': `<integer>`",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
             Default: 1"""},
         "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'run_parallelism': <integer>",
+            "syntax":"'run_parallelism': `<integer>`",
             "description":"""Controls how many jobs run in parallel to process a single minute of data from the source table.
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
         "bulk_max_size_bytes": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'bulk_max_size_bytes': <integer>",
+            "syntax":"'bulk_max_size_bytes': `<integer>`",
             "description":"""The max size of each bulk insert into the index. This option defaults to 9MB.
             Default: 9"""},
         "index_partition_size": {"type": "value", "editable": True, "optional": True,
@@ -166,7 +166,7 @@ Transformation_options = {
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -174,7 +174,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': `'<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp/NOW>'`",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -193,11 +193,11 @@ Transformation_options = {
             See: UNNEST
             Default: false"""},
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'aggregation_parallelism': <integer>",
+            "syntax":"'aggregation_parallelism': `<integer>`",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
             Default: 1"""},
         "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'run_parallelism': <integer>",
+            "syntax":"'run_parallelism': `<integer>`",
             "description":"""Controls how many jobs run in parallel to process a single minute of data from the source table.
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
@@ -219,7 +219,7 @@ Transformation_options = {
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -227,7 +227,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': `'<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp/NOW>'",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -246,11 +246,11 @@ Transformation_options = {
             See: UNNEST
             Default: false"""},
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'aggregation_parallelism': <integer>",
+            "syntax":"'aggregation_parallelism': `<integer>`",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
             Default: 1"""},
         "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'run_parallelism': <integer>",
+            "syntax":"'run_parallelism': `<integer>`",
             "description":"""Controls how many jobs run in parallel to process a single minute of data from the source table.
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
@@ -267,7 +267,7 @@ Transformation_options = {
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
         "start_from": {"type": "value", "editable": False, "optional": True,
-            "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+            "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
             "description":"""Configures the time to start inserting data from. Data before the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set a start time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -275,7 +275,7 @@ Transformation_options = {
             Values: { NOW | BEGINNING | timestamp }
             Default: BEGINNING"""},
         "end_at": {"type": "value", "editable": True, "optional": True,
-            "syntax":"'end_at': `'<timestamp>/NOW'",
+            "syntax":"'end_at': `'<timestamp/NOW'>`",
             "description":"""Configures the time to stop inserting data. Data after the specified time is ignored.
             If set as a timestamp, it should be aligned to the RUN_INTERVAL.
             For example, if RUN_INTERVAL is set to 5 minutes, then you can set an end time of 12:05 PM but not 12:03 PM. Additionally, the timestamp should be based in UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'.
@@ -294,11 +294,11 @@ Transformation_options = {
             See: UNNEST
             Default: false"""},
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'aggregation_parallelism': <integer>",
+            "syntax":"'aggregation_parallelism': `<integer>`",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
             Default: 1"""},
         "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'run_parallelism': <integer>",
+            "syntax":"'run_parallelism': `<integer>`",
             "description":"""Controls how many jobs run in parallel to process a single minute of data from the source table.
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},

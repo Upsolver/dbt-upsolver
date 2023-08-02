@@ -178,7 +178,7 @@ Connection_options = {
                     and not for writing data to Kinesis. Default: false"""
         },
         "max_writers": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_writers': <integer>",
+                    "syntax":"'max_writers': `<integer>`",
                     "description":"""The number of maximum parallel writers to Kinesis. Default: 20"""
         },
         "stream_display_filter": {"type": "text", "editable": True, "optional": True,
@@ -216,7 +216,7 @@ Connection_options = {
                     "description":"""The password for the user"""
         },
         "max_concurrent_connections": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_concurrent_connections': <integer>",
+                    "syntax":"'max_concurrent_connections': `<integer>`",
                     "description":"""The maximum number of concurrent connections to the database.
                     Limiting this may reduce the load on the database but could result in longer data latency"""
         },
@@ -252,7 +252,7 @@ Connection_options = {
                     "description":"""The password for the user"""
         },
         "max_concurrent_connections": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_concurrent_connections': <integer>",
+                    "syntax":"'max_concurrent_connections': `<integer>`",
                     "description":"""The maximum number of concurrent connections to the database.
                     Limiting this may reduce the load on the database but could result in longer data latency"""
         },

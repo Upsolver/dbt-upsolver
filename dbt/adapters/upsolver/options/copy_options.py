@@ -24,7 +24,7 @@ Copy_options = {
                 "description":"""Additional properties to use when configuring the consumer. This overrides any settings in the Apache Kafka connection"""
             },
             "reader_shards": {"type": "integer", "editable": True, "optional": True,
-                "syntax":"'reader_shards': <integer>",
+                "syntax":"'reader_shards': `<integer>`",
                 "description":"""Determines how many readers are used in parallel to read the stream.
                 This number does not need to equal your number of partitions in Apache Kafka.
                 A recommended value would be to increase it by 1 for every 70 MB/s sent to your topic.
@@ -42,7 +42,7 @@ Copy_options = {
                 Values: { NOW | BEGINNING }"""
             },
             "end_at": {"type": "value", "editable": True, "optional": True,
-                "syntax":"'end_at': `'<timestamp>/NOW'",
+                "syntax":"'end_at': `'<timestamp/NOW>'`",
                 "description":"""Configures the time to stop ingesting data. Files after the specified time are ignored. Timestamps should be based on UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'
                 Values: { NOW | <timestamp> }
                 Default: Never"""
@@ -55,7 +55,7 @@ Copy_options = {
                 Default: The sole cluster in your environment"""
             },
             "run_parallelism": {"type": "integer", "editable": True, "optional": True,
-                "syntax":"'run_parallelism': <integer>",
+                "syntax":"'run_parallelism': `<integer>`",
                 "description":"""The number of parser jobs to run in parallel per minute.
                 Default: 1"""
             },
@@ -112,7 +112,7 @@ Copy_options = {
                 Skipping a snapshot is useful in scenarios where your primary database instance crashed or became unreachable, failing over to the secondary. In this case, you will need to re-establish the CDC connection but would not want to take a full snapshot because you already have all of the history in your table. In this case, you would want to restart processing from the moment you left off when the connection to the primary database went down"""
             },
             "end_at": {"type": "value", "editable": True, "optional": True,
-                "syntax":"'end_at': `'<timestamp>/NOW'",
+                "syntax":"'end_at': `'<timestamp/NOW>'`",
                 "description":"""Configures the time to stop ingesting data. Files after the specified time are ignored.
                 Timestamps should be based on UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'
                 Default: Never"""
@@ -159,13 +159,13 @@ Copy_options = {
                 "description":"""Adds a new publication to the current database. The publication name must be distinct from the name of any existing publication in the current database. DDL will be filtered"""
             },
             "end_at": {"type": "value", "editable": True, "optional": True,
-                "syntax":"'end_at': `'<timestamp>/NOW'",
+                "syntax":"'end_at': `'<timestamp/NOW>'`",
                 "description":"""Configures the time to stop ingesting data. Files after the specified time are ignored. Timestamps should be based on UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'
                 Values: { NOW | <timestamp> }
                 Default: Never"""
             },
             "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+                "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
                 "description":"""(Optional) Configures the time to start ingesting data from. Files before the specified time are ignored. Timestamps provided should be based on UTC.
                 When a DATE_PATTERN is not specified, configuring this option is not allowed. By default, all data available is ingested.
                 If theDATE_PATTERN is not lexicographically ordered, then this option cannot be set to BEGINNING.
@@ -247,13 +247,13 @@ Copy_options = {
                 Values: ( {COLUMNS = (, ...) | COLUMN = }, WINDOW = { MINUTE[S] | HOUR[S] | DAY[S] } ) """
             },
             "end_at": {"type": "value", "editable": True, "optional": True,
-                "syntax":"'end_at': `'<timestamp>/NOW'",
+                "syntax":"'end_at': `'<timestamp/NOW>'`",
                 "description":"""Configures the time to stop ingesting data. Files after the specified time are ignored. Timestamps should be based on UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'
                 Values: { NOW | <timestamp> }
                 Default: Never"""
             },
             "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+                "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
                 "description":"""Configures the time to start ingesting data. Files before the specified time are ignored. Timestamps should be in the UTC time format.
                 When a DATE_PATTERN is not specified, configuring this option is not allowed. By default, all available data is ingested.
                 If the DATE_PATTERN is not lexicographically ordered, then this option cannot be set to BEGINNING.
@@ -309,7 +309,7 @@ Copy_options = {
         },
         "job_options": {
             "reader_shards": {"type": "integer", "editable": True, "optional": True,
-                "syntax":"'reader_shards': <integer>",
+                "syntax":"'reader_shards': `<integer>`",
                 "description":"""Determines how many readers are used in parallel to read the stream.
                 This number does not need to equal your number of shards in Kinesis.
                 A recommended value would be to increase it by 1 for every 70 MB/s sent to your stream.
@@ -321,13 +321,13 @@ Copy_options = {
                 Default: false"""
             },
             "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'",
+                "syntax":"'start_from': `'<timestamp/NOW/BEGINNING>'`",
                 "description":"""Configures the time to start ingesting data. Files dated before the specified time are ignored.
                 Values: { NOW | BEGINNING }
                 Default: BEGINNING"""
             },
             "end_at": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'end_at': `'<timestamp>/NOW'",
+                "syntax":"'end_at': `'<timestamp/NOW>'`",
                 "description":"""Configures the time to stop ingesting data. Files after the specified time are ignored. Timestamps should be based on UTC and in the following format: TIMESTAMP 'YYYY-MM-DD HH:MM:SS'
                 Values: { NOW | <timestamp> }
                 Default: Never"""
@@ -340,7 +340,7 @@ Copy_options = {
                 Default: The sole cluster in your environment"""
             },
             "run_parallelism": {"type": "integer", "editable": False, "optional": True,
-                "syntax":"'run_parallelism': <integer>",
+                "syntax":"'run_parallelism': `<integer>`",
                 "description":"""The number of parser jobs to run in parallel per minute.
                 Default: 1"""
             },
