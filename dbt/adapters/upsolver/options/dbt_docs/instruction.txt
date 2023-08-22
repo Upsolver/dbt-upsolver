@@ -1,0 +1,13 @@
+Instruction to update options in the docs
+
+1. After changes in one of the files:
+copy_options.py
+connection_options.py
+target_options.py
+transformation_options.py
+
+Run options/generate_options_docs.py
+It will generate properties.md
+
+2. Copy properties.md content to the upsolver-config.md file
+Start from '## Connection options'

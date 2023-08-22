@@ -26,7 +26,7 @@ def write_copy_options_to_md(options_category, options_header, file):
                 for key, value in value_job.items():
                     md_file.write(f"| {key} | {key_con} | {key_job} | {value['editable']} | {value['optional']} | {value.get('syntax', '')} |\n")
 
-with open('connection_properties.md', 'w') as md_file:
+with open('properties.md', 'w') as md_file:
     write_options_to_md(Connection_options, 'Connection options', md_file)
     write_options_to_md(Target_options, 'Target options', md_file)
     write_options_to_md(Transformation_options, 'Transformation options', md_file)
