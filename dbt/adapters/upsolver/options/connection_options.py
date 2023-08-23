@@ -16,7 +16,7 @@ Connection_options = {
                     "description":"""The AWS access key ID. Used in conjunction with AWS_SECRET_ACCESS_KEY.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
         },
-        "aws_secret_access_key_id": {"type": "text", "editable": True, "optional": True,
+        "aws_secret_access_key": {"type": "text", "editable": True, "optional": True,
                     "syntax":"'aws_secret_access_key_id': `'<aws_secret_access_key_id>'`",
                     "description":"""The AWS secret key corresponding to the provided AWS_ACCESS_KEY_ID.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
@@ -43,7 +43,7 @@ Connection_options = {
                     "description":"""The ARN of the KMS key to use.
                     If omitted, uses the default encryption defined on the bucket in AWS"""
         },
-        "encryption_customer_kms_key": {"type": "text", "editable": True, "optional": True,
+        "encryption_customer_managed_key": {"type": "text", "editable": True, "optional": True,
                     "syntax":"'encryption_customer_kms_key': `'<encryption_customer_kms_key>'`",
                     "description":"""The Base64 text representation of the encryption key to use.
                     If omitted, uses the default encryption defined on the bucket in AWS"""
