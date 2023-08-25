@@ -43,7 +43,7 @@ Target_options = {
             "description":"""This configures the partition column to use to determine whether the retention period has passed for a given record.
             This option is required if you have more than one date partition column.
             Default: The only partition column of type date"""},
-        "table_data_retention": {"type": "identifier", "editable": True, "optional": True,
+        "table_data_retention": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'table_data_retention': `'<N DAYS>'`",
             "description":"""When set, data in partitions that have passed the retention period are deleted from the table. Number of days can range between 1 and 9999.
             This option is not a deterministic mechanism that deletes data when it immediately surpasses the defined threshold. This mechanism is closer to the lifecycle policies on common blob storage services, such as Amazon S3, and is designed to save storage costs, not to delete data based on a specific time. Therefore when data passes the retention period, it will be deleted at some point in the future, and can no longer be relied to exist, though Upsolver aims to delete it within a reasonable timeframe.
@@ -72,7 +72,7 @@ Target_options = {
             "description":"""The storage location for the materialized view's underlying files. It should be provided in the format s3://bucket_name/path_to_data. This option is required when STORAGE_CONNECTION is set.
             When set, STORAGE_CONNECTION must be configured as well to provide a connection with access to write to the specified storage location.
             Default: The storage location of the first table in the FROM statement"""},
-        "max_time_travel_duration": {"type": "identifier", "editable": True, "optional": True,
+        "max_time_travel_duration": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'max_time_travel_duration': `'<N DAYS>'`",
             "description":"""How long, in days, the state information maintained by the materialized view should be retained. By default, the state is maintained indefinitely, allowing you to time travel to any point in time from the creation of the MV.
             Default: infinite"""},
