@@ -1,5 +1,5 @@
 Connection_options = {
-  "s3": {
+    "s3": {
         "aws_role": {"type": "text", "editable": True, "optional": True,
             "syntax":"'aws_role': `'<aws_role>'`",
             "description":"""The AWS IAM role ARN. Used in conjunction with EXTERNAL_ID.
@@ -52,7 +52,7 @@ Connection_options = {
                     "syntax":"'comment': `'<comment>'`",
                     "description":"""A description or comment regarding this connection"""
         }
-  },
+    },
     "kafka": {
         "host": {"type": "text", "editable": False, "optional": False,
                 "syntax":"'host': `'<host>'`",
@@ -117,7 +117,7 @@ Connection_options = {
                     "description":"""The AWS secret key corresponding to the provided AWS_ACCESS_KEY_ID.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
         },
-        "default_storage_connection": {"type": "identifier", "editable": False, "optional": False,
+        "default_storage_connection": {"type": "value", "editable": False, "optional": False,
                     "syntax":"'default_storage_connection': `'<default_storage_connection>'`",
                     "description":"""An Amazon S3 connection with the appropriate credentials to write to the
                     DEFAULT_STORAGE_LOCATION provided"""
