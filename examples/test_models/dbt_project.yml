@@ -1,8 +1,6 @@
 
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 's3_to_athena_new'
+# Project to test option syntax for all type of connections and sources for all jobs
+name: 'test_models'
 version: '1.0.0'
 config-version: 2
 

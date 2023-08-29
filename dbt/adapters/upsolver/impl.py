@@ -123,7 +123,7 @@ class UpsolverAdapter(adapter_cls):
             if (isinstance(option_value, list) or isinstance(option_value, tuple)) and len(option_value) > 1:
                 return tuple(i for i in option_value)
             else:
-                return f"('{', '.join(option_value)}')"
+                return f"('{''.join(option_value)}')"
         except Exception:
             raise dbt.exceptions.ParsingError(f"Error while parsing value: {value}. Expected type: list of strings")
 

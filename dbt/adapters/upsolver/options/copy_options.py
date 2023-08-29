@@ -2,7 +2,7 @@ Copy_options = {
     "kafka": {
         "source_options": {
             "topic": {"type": "text", "editable": False, "optional": False,
-                "syntax":"'comment': `'<comment>'`",
+                "syntax":"'topic': `'<topic>'`",
                 "description":"""The topic to read from"""
             }
         },
@@ -20,7 +20,7 @@ Copy_options = {
                 Note that if you have multiple jobs writing to a table in your lake, duplicate rows can be generated, even when you include this option"""
             },
             "consumer_properties": {"type": "text", "editable": True, "optional": True,
-                "syntax":"'comment': `'<comment>'`",
+                "syntax":"'consumer_properties': `'<consumer_properties>'`",
                 "description":"""Additional properties to use when configuring the consumer. This overrides any settings in the Apache Kafka connection"""
             },
             "reader_shards": {"type": "integer", "editable": True, "optional": True,
@@ -412,7 +412,7 @@ Copy_options = {
                 "syntax":"'comment': `'<comment>'`",
                 "description":"""A description or comment regarding this job"""
             },
-            "column_transformations": {"type": "text", "editable": True, "optional": True,
+            "column_transformations": {"type": "dict", "editable": True, "optional": True,
                 "syntax":"'column_transformations': {`'<column>'` : `'<expression>'` , ...}",
                 "description":"""If transformations must be applied prior to data landing in your target, you can use this option to perform data transformations during ingestion. When ingesting into the data lake, it is recommended that you only apply essential transformations, such as protecting PII, as it is easier to make amendments or corrections at a later date if the data remains in its raw state and instead use a transformation job to apply modifications. Therefore, as a general rule, you should only transform data that must be modified before it reaches the target.
                 However, transformations provide the flexibility to shape your data before it lands in the target. You can use all the functions and operators supported by Upsolver to create calculated fields within your ingestion job. New columns can be added to your target, and existing column data can be transformed. You can perform actions such as converting data types, formatting string values, and concatenating columns to create a new column.
@@ -517,7 +517,7 @@ Copy_options = {
     "mongodb": {
         "source_options": {
             "collection_include_list": {"type": "list", "editable": True, "optional": True,
-                "syntax":"'table_include_list': (`'<regexFilter>'`, ...)",
+                "syntax":"'collection_include_list': (`'<regexFilter>'`, ...)",
                 "description":"""Comma-separated list of regular expressions that match fully-qualified table identifiers of tables whose changes you want to capture. This maps to the Debezium table.include.list property.
                 By default, the connector captures changes in every non-system table in all databases. To match the name of a table, SQLake applies the regular expression that you specify as an anchored regular expression. That is, the specified expression is matched against the entire name string of the table.  It does not match substrings that might be present in a table name.
                 Default: ''"""
