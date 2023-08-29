@@ -195,14 +195,6 @@ Copy_options = {
                 Values: { NOW | <timestamp> }
                 Default: Never"""
             },
-            "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': `'<timestamp>/NOW/BEGINNING'`",
-                "description":"""(Optional) Configures the time to start ingesting data from. Files before the specified time are ignored. Timestamps provided should be based on UTC.
-                When a DATE_PATTERN is not specified, configuring this option is not allowed. By default, all data available is ingested.
-                If theDATE_PATTERN is not lexicographically ordered, then this option cannot be set to BEGINNING.
-                Values: { NOW | BEGINNING | <timestamp> }
-                Default: BEGINNING"""
-            },
             "compute_cluster": {"type": "identifier", "editable": True, "optional": True,
                 "syntax":"'compute_cluster': `'<compute_cluster>'`",
                 "description":"""The compute cluster to run this job. This option can only be omitted when there is only one cluster in your environment. If you have more than one compute cluster, you need to determine which one to use through this option.
@@ -502,12 +494,6 @@ Copy_options = {
                 "description":"""If enabled, Upsolver will parse JSON columns into a struct matching the JSON value.
                 Default: false"""
             },
-            "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': 'BEGINNING/NOW'",
-                "description":"""Configures the time from which to start ingesting data. Files before the specified time are ignored.
-                Default: BEGINNING
-                Values: { NOW | BEGINNING }"""
-            },
             "comment": {"type": "text", "editable": True, "optional": True,
                 "syntax":"'comment': `'<comment>'`",
                 "description":"""A description or comment regarding this job"""
@@ -557,12 +543,6 @@ Copy_options = {
                 "syntax":"'snapshot_parallelism': `<integer>`",
                 "description":"""Configures how many snapshots are performed concurrently. The more snapshots performed concurrently, the quicker it is to have all tables streaming. However, doing more snapshots in parallel increases the load on the source database.
                 Default: 1"""
-            },
-            "start_from": {"type": "value", "editable": False, "optional": True,
-                "syntax":"'start_from': 'BEGINNING/NOW'",
-                "description":"""Configures the time from which to start ingesting data. Files before the specified time are ignored.
-                Default: BEGINNING
-                Values: { NOW | BEGINNING }"""
             },
             "comment": {"type": "text", "editable": True, "optional": True,
                 "syntax":"'comment': `'<comment>'`",

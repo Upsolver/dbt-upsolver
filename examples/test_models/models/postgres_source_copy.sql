@@ -8,7 +8,6 @@
             'skip_snapshots': True,
             'publication_name': 'publication_name_value',
             'end_at': 'NOW',
-            'start_from': 'BEGINNING',
             'comment': 'comment_value',
             'parse_json_columns': True,
             'exclude_columns': ('exclude_column'),
