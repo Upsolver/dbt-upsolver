@@ -1,3 +1,4 @@
+# use for ingression job to incert into target
 Target_options = {
     "datalake": {
         "globally_unique_keys": {"type": "boolean", "editable": False, "optional": True,
@@ -6,7 +7,7 @@ Target_options = {
             However, some use cases may require that the primary keys be globally unique (in other words, unique across partitions). This means that when upserting, rows with the same primary key should be replaced, even if they belong to different partitions. Note that this also means that rows can "switch" partitions.
             If such is the case, you should set this option as true.
             Default: false"""},
-        "storage_connection": {"type": "identifier", "editable": False, "optional": True,
+        "storage_connection": {"type": "value", "editable": False, "optional": True,
             "syntax":"'storage_connection': `'<storage_connection>'`",
             "description":"""The storage connection associated with the STORAGE_LOCATION for the table's underlying files.
             Only a storage type connection can be used here (e.g. S3, Blob storage, GCS, Oracle object storage), and it should match the catalog's metastore. For example, if Glue is used as the metastore, only S3 is allowed as a storage connection.
@@ -38,7 +39,7 @@ Target_options = {
             "syntax":"'disable_compaction': True/False",
             "description":"""When true, disables the compaction process.
             Default: false"""},
-        "retention_date_partition": {"type": "identifier", "editable": False, "optional": True,
+        "retention_date_partition": {"type": "value", "editable": False, "optional": True,
             "syntax":"'retention_date_partition': `'<column>'`",
             "description":"""This configures the partition column to use to determine whether the retention period has passed for a given record.
             This option is required if you have more than one date partition column.
@@ -61,7 +62,7 @@ Target_options = {
             "description":"""A description or comment regarding this table"""}
   },
     "materialized_view": {
-        "storage_connection": {"type": "identifier", "editable": False, "optional": True,
+        "storage_connection": {"type": "value", "editable": False, "optional": True,
             "syntax":"'storage_connection': `'<storage_connection>'`",
             "description":"""The storage connection associated with the STORAGE_LOCATION for the table's underlying files.
             Only a storage type connection can be used here (e.g. S3, Blob storage, GCS, Oracle object storage), and it should match the catalog's metastore. For example, if Glue is used as the metastore, only S3 is allowed as a storage connection.

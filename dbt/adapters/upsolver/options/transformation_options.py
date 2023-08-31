@@ -32,11 +32,11 @@ Transformation_options = {
         "comment": {"type": "text", "editable": True, "optional": True,
             "syntax":"'comment': `'<comment>'`",
             "description":"""A description or comment regarding this job."""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -47,7 +47,7 @@ Transformation_options = {
             Increasing this can lower the end-to-end latency if you have lots of data per minute.
             Default: 1"""},
         "file_format": {"type": "value", "editable": False, "optional": False,
-            "syntax":"'file_format': 'CSV/TSV ...'",
+            "syntax":"'file_format': `'(type = <file_format>)'`",
             "description":"""The file format for the output file.
             Values: { CSV | TSV | AVRO | PARQUET | JSON }"""},
         "compression": {"type": "value", "editable": False, "optional": True,
@@ -63,21 +63,7 @@ Transformation_options = {
             "syntax":"'output_offset': `'<N MINUTES/HOURS/DAYS>'`",
             "description":""" By default, the file 2023/01/01/00/01 contains data for 2023-01-01 00:00 - 2023-01-01 00:00.59.999. Setting OUTPUT_OFFSET to 1 MINUTE add to that so a value of the first minute will move the file name to 02, if you want to move it back you can use negative values.
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
-            Default: 0"""},
-        "location": {"type": "text", "editable": False, "optional": False,
-            "syntax":"'location': `'<location>'`",
-            "description":"""The target location to write files to, as a full S3 URI. The location URI pattern can include macros referring to data columns, this allows custom partitioning of the data in the target location.
-            Supported macros:
-            Time: {time:<date-pattern>}
-            This macro will be replaced with the job execution time at runtime. The date pattern provided must be in Java's date formatting syntax. Only a single-time macro can be used in the location.
-            Column: {col:<column-name>}
-            This macro will be replaced with the value of the column provided. The column provided must appear in the select statement of the job.
-            Shard: {shard:format}
-            This macro will be replaced by the output shard number writing the current file. It is important to use this as part of your pattern if you are using RUN_PARALLELISM, otherwise, each shard will overwrite the file.
-            The supported format is a subset of Java's string fromat syntax. The supported options are either:
-            1. %0xd - Will result in a shard number padded with x-1 leading 0's.  For example, %05d will result in 00001 for shard number 1.
-            2. %d - Will simply use the shard number with no padding.
-            Usually, it's recommended to include padding to ensure alphabetical sorting of the output files."""}
+            Default: 0"""}
   },
   "elasticsearch": {
         "run_interval": {"type": "integer", "editable": False, "optional": True,
@@ -87,7 +73,7 @@ Transformation_options = {
             For example, you can set RUN_INTERVAL to 2 hours (the job runs 12 times per day), but trying to set RUN_INTERVAL to 5 hours would fail since 24 hours is not evenly divisible by 5.RUN_INTERVAL
             Value: <integer> { MINUTE[S] | HOUR[S] | DAY[S] }
             Default: 1 MINUTE"""},
-        "routing_field_name": {"type": "identifier", "editable": True, "optional": True,
+        "routing_field_name": {"type": "value", "editable": True, "optional": True,
             "syntax":"'routing_field_name': `'<routing_field_name>'`",
             "description":"""A field name that will be used for setting the routing field in Elasticsearch (_routing)."""},
         "start_from": {"type": "value", "editable": False, "optional": True,
@@ -112,11 +98,11 @@ Transformation_options = {
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -195,11 +181,11 @@ Transformation_options = {
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -248,11 +234,11 @@ Transformation_options = {
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -296,11 +282,11 @@ Transformation_options = {
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -352,11 +338,11 @@ Transformation_options = {
             This option can only be omitted when there is just one cluster in your environment.
             Once you have more than one compute cluster, you are required to provide which one to use through this option.
             Default: The sole cluster in your environment"""},
-        "allow_cartesian_products": {"type": "boolean", "editable": False, "optional": True,
-            "syntax":"'allow_cartesian_products': True/False",
-            "description":"""When true, flattening unrelated arrays may lead to Cartesian products in your final result.
-            See: UNNEST
-            Default: false"""},
+        "skip_validations": {"type": "list", "editable": False, "optional": True,
+            "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
+            "description":"""Use this option if data is expected to arrive in the source at a later point in time.
+            This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
