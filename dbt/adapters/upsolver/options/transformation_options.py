@@ -37,6 +37,11 @@ Transformation_options = {
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
         },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -102,6 +107,11 @@ Transformation_options = {
             "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
         },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
@@ -186,6 +196,11 @@ Transformation_options = {
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
         },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -239,6 +254,11 @@ Transformation_options = {
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
         },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
+        },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
             "description":"""Only supported when the query contains aggregations. Formally known as "output sharding."
@@ -286,6 +306,11 @@ Transformation_options = {
             "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
         },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
@@ -342,6 +367,11 @@ Transformation_options = {
             "syntax":"'skip_validations': ('ALLOW_CARTESIAN_PRODUCT', ...)",
             "description":"""Use this option if data is expected to arrive in the source at a later point in time.
             This option tells Upsolver to ignore specific validations to allow you to create a job that reads from a source that currently has no data."""
+        },
+        "skip_all_validations": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'skip_all_validations': True/False",
+            "description":"""If data is expected to arrive in the source at a later point in time, set this value to true.
+            This option instructs Upsolver to ignore all validations to allow you to create a job that reads from a source that currently has no data."""
         },
         "aggregation_parallelism": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'aggregation_parallelism': <integer>",
