@@ -32,7 +32,7 @@ Target_options = {
             Values: { SNAPPY | GZIP }
             Default: SNAPPY"""},
         "compaction_processes": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'compaction_processes': <integer>",
+            "syntax":"'compaction_processes': `<integer>`",
             "description":""" This determines the number of compaction processes your table can do in parallel when it periodically compacts your data.
             Default: 1"""},
         "disable_compaction": {"type": "boolean", "editable": True, "optional": True,
