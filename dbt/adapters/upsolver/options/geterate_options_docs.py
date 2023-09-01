@@ -3,6 +3,7 @@ from copy_options import Copy_options
 from target_options import Target_options
 from transformation_options import Transformation_options
 
+print('start ------>')
 
 def write_header(options_header, file):
     file.write(f"\n\n## {options_header}\n\n")
@@ -34,3 +35,5 @@ with open('properties.md', 'w') as md_file:
 
 
 md_file.close()
+
+print('done ------|')
