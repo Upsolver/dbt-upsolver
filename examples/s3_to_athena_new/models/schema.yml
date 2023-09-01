@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: orders_row_data_with_constraints
+    config:
+      materialized: table
+      contract:
+        enforced: true
+
+    constraints:
+
+      - type: not_null
+        columns: ['orderid', 'ordertype']
+
+    columns:
+      - name: ordertype
+        data_type: string
+        constraints:
+          - type: check
+            expression: "LENGTH(ordertype) >= 3"
+            name: ordertype_length_gt_10

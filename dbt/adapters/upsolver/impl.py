@@ -120,7 +120,7 @@ class UpsolverAdapter(adapter_cls):
 
     def render_option_from_list(self, option_value):
         try:
-            if isinstance(option_value, list) and len(option_value) > 1:
+            if (isinstance(option_value, list) or isinstance(option_value, tuple)) and len(option_value) > 1:
                 return tuple(i for i in option_value)
             else:
                 return f"('{''.join(option_value)}')"

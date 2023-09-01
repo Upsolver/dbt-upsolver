@@ -1,5 +1,5 @@
 Connection_options = {
-  "s3": {
+    "s3": {
         "aws_role": {"type": "text", "editable": True, "optional": True,
             "syntax":"'aws_role': `'<aws_role>'`",
             "description":"""The AWS IAM role ARN. Used in conjunction with EXTERNAL_ID.
@@ -16,7 +16,7 @@ Connection_options = {
                     "description":"""The AWS access key ID. Used in conjunction with AWS_SECRET_ACCESS_KEY.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
         },
-        "aws_secret_access_key_id": {"type": "text", "editable": True, "optional": True,
+        "aws_secret_access_key": {"type": "text", "editable": True, "optional": True,
                     "syntax":"'aws_secret_access_key_id': `'<aws_secret_access_key_id>'`",
                     "description":"""The AWS secret key corresponding to the provided AWS_ACCESS_KEY_ID.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
@@ -43,7 +43,7 @@ Connection_options = {
                     "description":"""The ARN of the KMS key to use.
                     If omitted, uses the default encryption defined on the bucket in AWS"""
         },
-        "encryption_customer_kms_key": {"type": "text", "editable": True, "optional": True,
+        "encryption_customer_managed_key": {"type": "text", "editable": True, "optional": True,
                     "syntax":"'encryption_customer_kms_key': `'<encryption_customer_kms_key>'`",
                     "description":"""The Base64 text representation of the encryption key to use.
                     If omitted, uses the default encryption defined on the bucket in AWS"""
@@ -52,7 +52,7 @@ Connection_options = {
                     "syntax":"'comment': `'<comment>'`",
                     "description":"""A description or comment regarding this connection"""
         }
-  },
+    },
     "kafka": {
         "host": {"type": "text", "editable": False, "optional": False,
                 "syntax":"'host': `'<host>'`",
@@ -117,7 +117,7 @@ Connection_options = {
                     "description":"""The AWS secret key corresponding to the provided AWS_ACCESS_KEY_ID.
                     If omitted, the role created when integrating Upsolver with the AWS account is used"""
         },
-        "default_storage_connection": {"type": "identifier", "editable": False, "optional": False,
+        "default_storage_connection": {"type": "value", "editable": False, "optional": False,
                     "syntax":"'default_storage_connection': `'<default_storage_connection>'`",
                     "description":"""An Amazon S3 connection with the appropriate credentials to write to the
                     DEFAULT_STORAGE_LOCATION provided"""
@@ -178,7 +178,7 @@ Connection_options = {
                     and not for writing data to Kinesis. Default: false"""
         },
         "max_writers": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_writers': <integer>",
+                    "syntax":"'max_writers': `<integer>`",
                     "description":"""The number of maximum parallel writers to Kinesis. Default: 20"""
         },
         "stream_display_filter": {"type": "text", "editable": True, "optional": True,
@@ -216,7 +216,7 @@ Connection_options = {
                     "description":"""The password for the user"""
         },
         "max_concurrent_connections": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_concurrent_connections': <integer>",
+                    "syntax":"'max_concurrent_connections': `<integer>`",
                     "description":"""The maximum number of concurrent connections to the database.
                     Limiting this may reduce the load on the database but could result in longer data latency"""
         },
@@ -252,7 +252,7 @@ Connection_options = {
                     "description":"""The password for the user"""
         },
         "max_concurrent_connections": {"type": "integer", "editable": True, "optional": True,
-                    "syntax":"'max_concurrent_connections': <integer>",
+                    "syntax":"'max_concurrent_connections': `<integer>`",
                     "description":"""The maximum number of concurrent connections to the database.
                     Limiting this may reduce the load on the database but could result in longer data latency"""
         },
@@ -305,6 +305,48 @@ Connection_options = {
                     "syntax":"'connection_string': `'<connection_string>'`",
                     "description":"""The connection string to use when connecting to the cluster.
                     Format: 'elasticsearch://host:port?cluster.name=your_cluster_name'"""
+        },
+        "user_name": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'user_name': `'<user_name>'`",
+                    "description":"""The user to authenticate to the cluster"""
+        },
+        "password": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'password': `'<password>'`",
+                    "description":"""The password for the user"""
+        },
+        "comment": {"type": "text", "editable": True, "optional": True,
+                    "syntax":"'comment': `'<comment>'`",
+                    "description":"""A description or comment regarding this connection"""
+        }
+    },
+    "mongodb": {
+        "connection_string": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'connection_string': `'<connection_string>'`",
+                    "description":"""The connection string to use when connecting to the cluster.
+                    Format: 'mongodb+srv://upsolver.example.mongodb.net/testdb'"""
+        },
+        "user_name": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'user_name': `'<user_name>'`",
+                    "description":"""The user to authenticate to the cluster"""
+        },
+        "password": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'password': `'<password>'`",
+                    "description":"""The password for the user"""
+        },
+        "timeout": {"type": "integer", "editable": True, "optional": True,
+                    "syntax":"'timeout': \"INTERVAL 'N' SECONDS\"",
+                    "description":"""A description or comment regarding this connection"""
+        },
+        "comment": {"type": "text", "editable": True, "optional": True,
+                    "syntax":"'comment': `'<comment>'`",
+                    "description":"""A description or comment regarding this connection"""
+        }
+    },
+    "mssql": {
+        "connection_string": {"type": "text", "editable": True, "optional": False,
+                    "syntax":"'connection_string': `'<connection_string>'`",
+                    "description":"""The connection string to use when connecting to the cluster.
+                    Format: 'jdbc:sqlserver://ms-sqlserver-1.myendpoint.us-east-1.rds.amazonaws.com:1433;DatabaseName=mydb'"""
         },
         "user_name": {"type": "text", "editable": True, "optional": False,
                     "syntax":"'user_name': `'<user_name>'`",

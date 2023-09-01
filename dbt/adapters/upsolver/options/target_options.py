@@ -1,3 +1,4 @@
+# use for ingression job to incert into target
 Target_options = {
     "datalake": {
         "globally_unique_keys": {"type": "boolean", "editable": False, "optional": True,
@@ -6,7 +7,7 @@ Target_options = {
             However, some use cases may require that the primary keys be globally unique (in other words, unique across partitions). This means that when upserting, rows with the same primary key should be replaced, even if they belong to different partitions. Note that this also means that rows can "switch" partitions.
             If such is the case, you should set this option as true.
             Default: false"""},
-        "storage_connection": {"type": "identifier", "editable": False, "optional": True,
+        "storage_connection": {"type": "value", "editable": False, "optional": True,
             "syntax":"'storage_connection': `'<storage_connection>'`",
             "description":"""The storage connection associated with the STORAGE_LOCATION for the table's underlying files.
             Only a storage type connection can be used here (e.g. S3, Blob storage, GCS, Oracle object storage), and it should match the catalog's metastore. For example, if Glue is used as the metastore, only S3 is allowed as a storage connection.
@@ -31,19 +32,19 @@ Target_options = {
             Values: { SNAPPY | GZIP }
             Default: SNAPPY"""},
         "compaction_processes": {"type": "integer", "editable": True, "optional": True,
-            "syntax":"'compaction_processes': <integer>",
+            "syntax":"'compaction_processes': `<integer>`",
             "description":""" This determines the number of compaction processes your table can do in parallel when it periodically compacts your data.
             Default: 1"""},
         "disable_compaction": {"type": "boolean", "editable": True, "optional": True,
             "syntax":"'disable_compaction': True/False",
             "description":"""When true, disables the compaction process.
             Default: false"""},
-        "retention_date_partition": {"type": "identifier", "editable": False, "optional": True,
+        "retention_date_partition": {"type": "value", "editable": False, "optional": True,
             "syntax":"'retention_date_partition': `'<column>'`",
             "description":"""This configures the partition column to use to determine whether the retention period has passed for a given record.
             This option is required if you have more than one date partition column.
             Default: The only partition column of type date"""},
-        "table_data_retention": {"type": "identifier", "editable": True, "optional": True,
+        "table_data_retention": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'table_data_retention': `'<N DAYS>'`",
             "description":"""When set, data in partitions that have passed the retention period are deleted from the table. Number of days can range between 1 and 9999.
             This option is not a deterministic mechanism that deletes data when it immediately surpasses the defined threshold. This mechanism is closer to the lifecycle policies on common blob storage services, such as Amazon S3, and is designed to save storage costs, not to delete data based on a specific time. Therefore when data passes the retention period, it will be deleted at some point in the future, and can no longer be relied to exist, though Upsolver aims to delete it within a reasonable timeframe.
@@ -61,7 +62,7 @@ Target_options = {
             "description":"""A description or comment regarding this table"""}
   },
     "materialized_view": {
-        "storage_connection": {"type": "identifier", "editable": False, "optional": True,
+        "storage_connection": {"type": "value", "editable": False, "optional": True,
             "syntax":"'storage_connection': `'<storage_connection>'`",
             "description":"""The storage connection associated with the STORAGE_LOCATION for the table's underlying files.
             Only a storage type connection can be used here (e.g. S3, Blob storage, GCS, Oracle object storage), and it should match the catalog's metastore. For example, if Glue is used as the metastore, only S3 is allowed as a storage connection.
@@ -72,7 +73,7 @@ Target_options = {
             "description":"""The storage location for the materialized view's underlying files. It should be provided in the format s3://bucket_name/path_to_data. This option is required when STORAGE_CONNECTION is set.
             When set, STORAGE_CONNECTION must be configured as well to provide a connection with access to write to the specified storage location.
             Default: The storage location of the first table in the FROM statement"""},
-        "max_time_travel_duration": {"type": "identifier", "editable": True, "optional": True,
+        "max_time_travel_duration": {"type": "integer", "editable": True, "optional": True,
             "syntax":"'max_time_travel_duration': `'<N DAYS>'`",
             "description":"""How long, in days, the state information maintained by the materialized view should be retained. By default, the state is maintained indefinitely, allowing you to time travel to any point in time from the creation of the MV.
             Default: infinite"""},

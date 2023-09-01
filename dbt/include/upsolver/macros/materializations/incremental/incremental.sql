@@ -7,6 +7,9 @@
   {%- set options = adapter.get(model_config, 'options', {}) -%}
   {%- set source = adapter.get(model_config, 'source') -%}
   {%- set target_type = adapter.get(model_config, 'target_type', 'datalake').lower() -%}
+  {%- set target_connection = adapter.get(model_config, 'target_connection', '').lower() -%}
+  {%- set target_location = adapter.get(model_config, 'target_location', '').lower() -%}
+  {%- set target_prefix = adapter.get(model_config, 'target_prefix', '').lower() -%}
   {%- set delete_condition = adapter.get(model_config, 'delete_condition', False) -%}
   {%- set partition_by = adapter.get(model_config, 'partition_by', []) -%}
   {%- set primary_key = adapter.get(model_config, 'primary_key', []) -%}
@@ -41,10 +44,13 @@
     {%- call statement('create_table_if_not_exists') -%}
       {{ get_create_table_if_not_exists_sql(table_relation, partition_by, primary_key, options) }}
     {%- endcall -%}
+  {%- elif  target_type  == 's3'-%}
+    {%- set into_relation = database + ' location=' + "'" + target_location + "'" -%}
+  {%- elif  target_type  == 'elasticsearch'-%}
+    {%- set into_relation = database + ' prefix=' + "'" + target_prefix + "'" -%}
   {%- else -%}
     {%- set into_relation = database + '.' + schema + '.' + identifier -%}
   {%- endif %}
-
   {%- if old_relation -%}
     {%- call statement('main') -%}
       {{ get_alter_job_sql(job_identifier, options, incremental_strategy, source) }}
