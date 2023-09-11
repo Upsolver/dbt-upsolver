@@ -4,7 +4,7 @@ id: "upsolver-configs"
 description: "Upsolver Configurations - Read this in-depth guide to learn about configurations in dbt."
 ---
 
-## Supported Upsolver SQLake functionality:
+## Supported Upsolver SQLake functionality
 
 | COMMAND | STATE | MATERIALIZED |
 | ------ | ------ | ------ |
@@ -58,18 +58,20 @@ Running this model will compile CREATE CONNECTION(or ALTER CONNECTION if exists)
 A COPY FROM job allows you to copy your data from a given source into a table created in a metastore connection. This table then serves as your staging table and can be used with SQLake transformation jobs to write to various target locations. More details on ["Upsolver SQL copy-from"](https://docs.upsolver.com/sqlake/sql-command-reference/sql-jobs/create-job/copy-from)
 
 As a dbt model copy job is model with materialized='incremental'
+
 ```sql
 {{ config(  materialized='incremental',
             sync=True|False,
             source = 'S3'| 'KAFKA' | ... ,
-        	options={
-              	'option_name': 'option_value'
+            options={
+              'option_name': 'option_value'
             },
-        	partition_by=[{}]
-      	)
+            partition_by=[{}]
+          )
 }}
 SELECT * FROM {{ ref(<model>) }}
 ```
+
 Running this model will  compile CREATE TABLE SQL for target type Data lake (or ALTER TABLE if exists) and CREATE COPY JOB(or ALTER COPY JOB if exists) SQL and send it to Upsolver engine. Name of the table will be name of the model. Name of the job will be name of the model plus '_job'
 
 ## SQL insert job
@@ -84,7 +86,7 @@ As a dbt model insert job is model with materialized='incremental' and increment
             map_columns_by_name=True|False,
             incremental_strategy='insert',
             options={
-              	'option_name': 'option_value'
+              'option_name': 'option_value'
             },
             primary_key=[{}]
           )
@@ -110,7 +112,7 @@ As a dbt model merge job is model with materialized='incremental' and incrementa
             map_columns_by_name=True|False,
             incremental_strategy='merge',
             options={
-              	'option_name': 'option_value'
+              'option_name': 'option_value'
             },
             primary_key=[{}]
           )
