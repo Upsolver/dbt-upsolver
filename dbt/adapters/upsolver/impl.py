@@ -144,8 +144,6 @@ class UpsolverAdapter(adapter_cls):
                     value = self.render_option_from_list_dict(value)
                 enriched_options[option] = find_value
                 enriched_options[option]['value'] = value
-            else:
-                logger.warning(f"Options not found: {option}")
         return enriched_options
 
     @available
@@ -337,3 +335,16 @@ class UpsolverAdapter(adapter_cls):
             return True
         else:
             return False
+
+    @available
+    def unique_options(self, options_1, options_2):
+        if options_1 and options_2:
+            options_1.update(options_2)
+            options = options_1
+        elif options_1:
+            options = options_1
+        elif options_2:
+            options = options_2
+        else:
+            options = {}
+        return  options

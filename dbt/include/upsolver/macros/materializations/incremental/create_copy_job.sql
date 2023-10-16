@@ -21,8 +21,7 @@
       SYNC {{''}}
     {%- endif -%}
     JOB {{job_identifier}}
-    {{ render_options(job_options, 'create') }}
-    {{ render_options(target_options, 'create') }}
+    {{ render_options(adapter.unique_options(job_options, target_options), 'create') }}
     AS COPY FROM {{source}} {{connection_identifier}}
     {{ render_options(source_options, 'create') }}
     INTO {{target_type}} {{into_relation}}
