@@ -107,6 +107,10 @@ Target_options = {
         "run_interval": {"type": "integer", "editable": False, "optional": True,
             "syntax":"'run_interval': `'<N MINUTES/HOURS/DAYS>'`",
             "description":"""How often the job runs.
-            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day."""}
+            The runs take place over a set period of time defined by this interval and they must be divisible by the number of hours in a day."""},
+        "add_missing_columns": {"type": "boolean", "editable": False, "optional": True,
+            "syntax":"'add_missing_columns': True/False",
+            "description":"""When true, columns that don't exist in the target table are added automatically when encountered.
+            Default: false"""}
     }
 }
